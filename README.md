@@ -8,7 +8,7 @@ A comprehensive end-to-end test automation framework built with Playwright and T
 - [Core Features](#-core-features)
 - [Project Structure](#-project-structure)
 - [Prerequisites](#-prerequisites)
-- [Setup Instructions](#-setup-instructions)
+- [Setup Instructions](#️-setup-instructions)
 - [Running Tests](#-running-tests)
 - [Reporting](#-reporting)
 - [Contributing](#-contributing)
