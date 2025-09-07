@@ -10,9 +10,6 @@ A comprehensive end-to-end test automation framework built with Playwright and T
 - [Prerequisites](#-prerequisites)
 - [Setup Instructions](#-setup-instructions)
 - [Running Tests](#-running-tests)
-- [Test Types](#-test-types)
-- [Configuration](#-configuration)
-- [CI/CD Integration](#-cicd-integration)
 - [Reporting](#-reporting)
 - [Contributing](#-contributing)
 
@@ -101,16 +98,11 @@ Before setting up the project, ensure you have the following installed:
 - **npm** (comes with Node.js)
 - **Git** (for version control)
 
-### System Requirements
-- **Operating System**: Windows 10+, macOS 10.15+, or Linux
-- **RAM**: 4GB minimum (8GB recommended)
-- **Disk Space**: 2GB for dependencies and browser binaries
-
 ## 🛠️ Setup Instructions
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone git@github.com:chptcleo/qa-code-challenge.git
 cd qa-code-challenge
 ```
 
