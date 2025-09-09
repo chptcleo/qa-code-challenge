@@ -177,7 +177,7 @@ pipeline {
                             npx playwright install ${browsersToInstall}
                             
                             # Install system dependencies (Linux)
-                            # npx playwright install-deps ${browsersToInstall} || true
+                            sudo npx playwright install-deps ${browsersToInstall} || true
                             
                             # Verify browser installation
                             npx playwright install --dry-run
