@@ -121,9 +121,8 @@ pipeline {
                 script {
                     try {
                         sh '''
-                            # set command to install specific Node.js version if needed
-                            curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash -
-                            apt-get install -y nodejs
+                            sudo apt update
+                            sudo apt install nodejs npm -y
                             # Check if Node.js is available
                             node --version
                             npm --version
@@ -133,7 +132,7 @@ pipeline {
                             echo "Current Node.js version: $NODE_CURRENT"
                         '''
                     } catch (Exception e) {
-                        error "❌ Node.js not found. Please install Node.js ${NODE_VERSION} or higher"
+                        error "❌ Node.js not found. Please install Node.js."
                     }
                 }
             }
