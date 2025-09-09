@@ -139,10 +139,6 @@ pipeline {
                             # Check if Node.js is available
                             node --version
                             npm --version
-                            
-                            # Verify Node.js version
-                            NODE_CURRENT=$(node --version | sed 's/v//')
-                            echo "Current Node.js version: $NODE_CURRENT"
                         '''
                     } catch (Exception e) {
                         error "❌ Node.js not found. Please install Node.js version ${NODE_VERSION} or higher."
