@@ -131,10 +131,10 @@ pipeline {
                             nvm list-remote
 
                             # Install specific Node.js version
-                            nvm install ${NODE_VERSION}
+                            nvm install --lts
 
                             # Use specific version
-                            nvm use ${NODE_VERSION}
+                            nvm use --lts
 
                             # Check if Node.js is available
                             node --version
