@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'mcr.microsoft.com/playwright:v1.55.0-jammy'
+            args '--ipc=host --user root'
+        }
+    }
 
     tools {
         nodejs "Node22"
@@ -176,15 +181,24 @@ pipeline {
                             # Install specific browsers based on selection
                             npx playwright install ${browsersToInstall}
                             
-                            # Install system dependencies (Linux)
-                            npx playwright install-deps ${browsersToInstall} || true
+                            # Try to install system dependencies without sudo first
+                            echo "Attempting to install system dependencies..."
+                            npx playwright install-deps ${browsersToInstall} || {
+                                echo "⚠️ System dependencies installation failed (likely due to permissions)"
+                                echo "This is expected in containerized environments"
+                                echo "Browsers will still work for most test scenarios"
+                            }
                             
                             # Verify browser installation
                             npx playwright install --dry-run
+                            
+                            # List installed browsers
+                            echo "Installed browsers:"
+                            ls -la ~/.cache/ms-playwright/ 2>/dev/null || echo "Browser cache directory not found"
                         """
                     } catch (Exception e) {
                         echo "⚠️ Browser installation warning: ${e.getMessage()}"
-                        // Continue with existing browsers if installation fails
+                        echo "Continuing with available browsers..."
                     }
                 }
             }
