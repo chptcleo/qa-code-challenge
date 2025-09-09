@@ -37,6 +37,20 @@ export default defineConfig({
     headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    
+    // CI-specific browser launch options
+    launchOptions: {
+      args: process.env.CI ? [
+        '--no-sandbox',
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--disable-gpu',
+        '--disable-web-security'
+      ] : []
+    }
   },
 
   /* Configure projects for major browsers */
