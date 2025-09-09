@@ -131,14 +131,17 @@ pipeline {
                             nvm list-remote
 
                             # Install specific Node.js version
-                            nvm install --lts
+                            nvm install ${NODE_VERSION}
 
                             # Use specific version
-                            nvm use --lts
 
                             # Check if Node.js is available
                             node --version
                             npm --version
+                            
+                            # Verify Node.js version
+                            NODE_CURRENT=$(node --version | sed 's/v//')
+                            echo "Current Node.js version: $NODE_CURRENT"
                         '''
                     } catch (Exception e) {
                         error "❌ Node.js not found. Please install Node.js version ${NODE_VERSION} or higher."
