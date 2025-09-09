@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         // Node.js version
-        NODE_VERSION = '22'
+        NODE_VERSION = '22.17.0'
         
         // Environment configuration
         ENV = "${params.ENVIRONMENT ?: 'qa'}"
@@ -121,8 +121,21 @@ pipeline {
                 script {
                     try {
                         sh '''
-                            apt update
-                            apt install nodejs npm -y
+                            # Download and install NVM
+                            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+                            # Reload your shell configuration
+                            source ~/.bashrc
+
+                            # List available Node.js versions
+                            nvm list-remote
+
+                            # Install specific Node.js version
+                            nvm install ${NODE_VERSION}
+
+                            # Use specific version
+                            nvm use ${NODE_VERSION}
+
                             # Check if Node.js is available
                             node --version
                             npm --version
@@ -132,7 +145,7 @@ pipeline {
                             echo "Current Node.js version: $NODE_CURRENT"
                         '''
                     } catch (Exception e) {
-                        error "❌ Node.js not found. Please install Node.js."
+                        error "❌ Node.js not found. Please install Node.js version ${NODE_VERSION} or higher."
                     }
                 }
             }
