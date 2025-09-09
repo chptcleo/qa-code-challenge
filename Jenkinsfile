@@ -121,6 +121,9 @@ pipeline {
                 script {
                     try {
                         sh '''
+                            # set command to install specific Node.js version if needed
+                            curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash -
+                            apt-get install -y nodejs
                             # Check if Node.js is available
                             node --version
                             npm --version
