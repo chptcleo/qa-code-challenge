@@ -174,10 +174,10 @@ pipeline {
                     try {
                         sh """
                             # Install specific browsers based on selection
-                            npx playwright install ${browsersToInstall}
+                            npx playwright install ${browsersToInstall} --with-deps
                             
                             # Install system dependencies (Linux)
-                            sudo npx playwright install-deps ${browsersToInstall} || true
+                            # npx playwright install-deps ${browsersToInstall}
                             
                             # Verify browser installation
                             npx playwright install --dry-run
