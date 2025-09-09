@@ -1,5 +1,9 @@
 pipeline {
     agent any
+
+    tools {
+        nodejs "Node22"
+    }
     
     environment {
         // Node.js version
@@ -121,45 +125,16 @@ pipeline {
                 script {
                     try {
                         sh '''
-                            # Check if Node.js is already installed
-                            if command -v node >/dev/null 2>&1; then
-                                echo "Node.js is already installed: $(node --version)"
-                                npm --version
-                            else
-                                echo "Installing Node.js via package manager..."
-                                
-                                # Detect OS and install Node.js
-                                if [ -f /etc/debian_version ]; then
-                                    # Ubuntu/Debian
-                                    curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION%%.*}.x | sudo -E bash -
-                                    sudo apt-get install -y nodejs
-                                elif [ -f /etc/redhat-release ]; then
-                                    # CentOS/RHEL/Fedora
-                                    curl -fsSL https://rpm.nodesource.com/setup_${NODE_VERSION%%.*}.x | sudo bash -
-                                    sudo yum install -y nodejs || sudo dnf install -y nodejs
-                                else
-                                    echo "Unsupported OS, trying generic installation..."
-                                    # Try using NVM with proper shell handling
-                                    export NVM_DIR="$HOME/.nvm"
-                                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-                                    
-                                    # Load NVM properly
-                                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-                                    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
-                                    
-                                    # Install and use Node.js
-                                    nvm install ${NODE_VERSION}
-                                    nvm use ${NODE_VERSION}
-                                    nvm alias default ${NODE_VERSION}
-                                fi
-                            fi
+                            # Check if Node.js is available
+                            node --version
+                            npm --version
                             
-                            # Verify installation
-                            echo "Node.js version: $(node --version)"
-                            echo "npm version: $(npm --version)"
+                            # Verify Node.js version
+                            NODE_CURRENT=$(node --version | sed 's/v//')
+                            echo "Current Node.js version: $NODE_CURRENT"
                         '''
                     } catch (Exception e) {
-                        error "❌ Node.js setup failed: ${e.getMessage()}"
+                        error "❌ Node.js not found. Please install Node.js version ${NODE_VERSION} or higher."
                     }
                 }
             }
