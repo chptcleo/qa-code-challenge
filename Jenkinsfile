@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'linux' // Use a Linux agent with Node.js support
-    }
+    agent any
     
     environment {
         // Node.js version
