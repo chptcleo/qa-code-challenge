@@ -121,8 +121,8 @@ pipeline {
                 script {
                     try {
                         sh '''
-                            sudo apt update
-                            sudo apt install nodejs npm -y
+                            apt update
+                            apt install nodejs npm -y
                             # Check if Node.js is available
                             node --version
                             npm --version
