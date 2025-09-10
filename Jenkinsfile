@@ -23,7 +23,7 @@ pipeline {
         )
         choice(
             name: 'TEST_SUITE',
-            choices: ['all', 'e2e', 'interface', 'smoke', 'regression'],
+            choices: ['e2e', 'interface', 'smoke', 'regression', 'all'],
             description: 'Test suite to execute'
         )
         choice(

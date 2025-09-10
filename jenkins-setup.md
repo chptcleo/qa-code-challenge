@@ -123,7 +123,7 @@ The Jenkinsfile includes these build parameters:
 | Parameter | Type | Default | Options |
 |-----------|------|---------|---------|
 | `ENVIRONMENT` | Choice | `qa` | qa, dev, uat, prod |
-| `TEST_SUITE` | Choice | `all` | all, e2e, interface, smoke, regression |
+| `TEST_SUITE` | Choice | `e2e` | e2e, interface, smoke, regression, all |
 | `BROWSER` | Choice | `chromium` | chromium, firefox, webkit, all |
 | `TEST_FILTER` | String | (empty) | Custom test filters |
 | `WORKERS` | Choice | `1` | 1, 2, 4, auto |
