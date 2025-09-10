@@ -125,7 +125,6 @@ The Jenkinsfile includes these build parameters:
 | `ENVIRONMENT` | Choice | `qa` | qa, dev, uat, prod |
 | `TEST_SUITE` | Choice | `all` | all, e2e, interface, smoke, regression |
 | `BROWSER` | Choice | `chromium` | chromium, firefox, webkit, all |
-| `HEADED_MODE` | Boolean | `false` | true, false |
 | `TEST_FILTER` | String | (empty) | Custom test filters |
 | `WORKERS` | Choice | `1` | 1, 2, 4, auto |
 | `GENERATE_TRACE` | Boolean | `false` | true, false |

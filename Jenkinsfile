@@ -31,11 +31,6 @@ pipeline {
             choices: ['chromium', 'firefox', 'webkit', 'all'],
             description: 'Browser for test execution'
         )
-        booleanParam(
-            name: 'HEADED_MODE',
-            defaultValue: false,
-            description: 'Run tests in headed mode (visible browser)'
-        )
         string(
             name: 'TEST_FILTER',
             defaultValue: '',
@@ -71,7 +66,6 @@ pipeline {
                     echo "Environment: ${params.ENVIRONMENT}"
                     echo "Test Suite: ${params.TEST_SUITE}"
                     echo "Browser: ${params.BROWSER}"
-                    echo "Headed Mode: ${params.HEADED_MODE}"
                     echo "Workers: ${params.WORKERS}"
                     echo "Test Filter: ${params.TEST_FILTER}"
                     echo "Generate Trace: ${params.GENERATE_TRACE}"
@@ -383,11 +377,6 @@ def buildTestCommand() {
     // Add browser filter
     if (params.BROWSER && params.BROWSER != 'all') {
         command += " --project=${params.BROWSER}"
-    }
-    
-    // Add headed mode
-    if (params.HEADED_MODE) {
-        command += " --headed"
     }
     
     // Add test filter
