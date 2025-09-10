@@ -253,11 +253,9 @@ pipeline {
                         }
                         
                         // Process JUnit results if available
-                        if (fileExists('results.xml')) {
-                            junit 'results.xml'
-                        } else if (fileExists('test-results/results.xml')) {
-                            junit 'test-results/results.xml'
-                        }
+                        // if (fileExists('results')) {
+                        //     junit 'results/.last-run.json'
+                        // }
                     }
                 }
             }
@@ -299,6 +297,16 @@ pipeline {
     
     post {
         always {
+
+            publishHTML(target: [
+                reportName : 'playwright Report',
+                reportDir  : 'playwright-report',
+                reportFiles: 'index.html',
+                keepAll    : true,
+                alwaysLinkToLastBuild: true,
+                allowMissing: true
+            ])
+
             script {
                 echo "🏁 Pipeline execution completed"
                 
@@ -411,9 +419,9 @@ def buildTestCommand() {
     }
     
     // Add CI-specific options
-    command += " --reporter=html,junit"
-    command += " --output=results.xml"
-    
+    // command += " --reporter=html"
+    // command += " --output=results"
+
     return command
 }
 
