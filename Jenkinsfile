@@ -11,15 +11,8 @@ pipeline {
         
         // Environment configuration
         ENV = "${params.ENVIRONMENT ?: 'qa'}"
-        // CI = 'true'
-        
-        // Playwright configuration
-        // PLAYWRIGHT_BROWSERS_PATH = "${WORKSPACE}/.playwright"
-        // PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = 'false'
-        
-        // Test configuration
-        // FORCE_COLOR = '1'
-        // NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
+
+        EMAIL_RECIPIENTS = 'chptcleo@hotmail.com'
     }
     
     parameters {
@@ -66,7 +59,7 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
         timestamps()
         // Retry failed builds
-        retry(1)
+        // retry(1)
     }
     
     stages {
@@ -184,7 +177,6 @@ pipeline {
                         """
                     } catch (Exception e) {
                         echo "⚠️ Browser installation warning: ${e.getMessage()}"
-                        // Continue with existing browsers if installation fails
                     }
                 }
             }
@@ -252,10 +244,6 @@ pipeline {
                             archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
                         }
                         
-                        // Process JUnit results if available
-                        // if (fileExists('results')) {
-                        //     junit 'results/.last-run.json'
-                        // }
                     }
                 }
             }
@@ -299,7 +287,7 @@ pipeline {
         always {
 
             publishHTML(target: [
-                reportName : 'playwright Report',
+                reportName : 'Playwright Report',
                 reportDir  : 'playwright-report',
                 reportFiles: 'index.html',
                 keepAll    : true,
@@ -417,10 +405,6 @@ def buildTestCommand() {
     if (params.GENERATE_TRACE) {
         command += " --trace=on"
     }
-    
-    // Add CI-specific options
-    // command += " --reporter=html"
-    // command += " --output=results"
 
     return command
 }
