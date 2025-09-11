@@ -37,6 +37,7 @@ test.describe.serial("Test Parabank Interface", () => {
     );
     expect(response.ok()).toBeTruthy();
 
+    // Sometimes the interface returns an empty array even if response status code is 200
     const body = await response.json();
     body.forEach((transaction: any) => {
       expect(String(transaction.accountId)).toEqual(globalVars.accountNumber);
