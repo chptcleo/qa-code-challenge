@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    triggers {
+        // Run at 2:57 AM every day
+        cron('57 2 * * *')
+    }
+
     tools {
         nodejs "Node22"
     }
