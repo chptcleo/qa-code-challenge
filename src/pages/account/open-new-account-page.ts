@@ -17,16 +17,16 @@ export class OpenNewAccountPage extends BasePage {
     super(page);
     this.accountTypeSelectLocator = this.page.locator("#openAccountForm #type");
     this.fromAccountIdSelectLocator = this.page.locator(
-      "#openAccountForm #fromAccountId"
+      "#openAccountForm #fromAccountId",
     );
     this.firstFromAccountIdSelectOptionLocator = this.page.locator(
-      "#openAccountForm #fromAccountId option:first-child"
+      "#openAccountForm #fromAccountId option:first-child",
     );
     this.openNewAccountButtonLocator = this.page.locator(
-      "input[value='Open New Account']"
+      "input[value='Open New Account']",
     );
     this.newAccountNumberLocator = this.page.locator(
-      "#openAccountResult #newAccountId"
+      "#openAccountResult #newAccountId",
     );
     this.customerMenu = new CustomerMenu(page);
   }
@@ -38,7 +38,7 @@ export class OpenNewAccountPage extends BasePage {
    */
   async openNewAccount(
     accountType: string,
-    fromAccountId: string = ""
+    fromAccountId: string = "",
   ): Promise<void> {
     await this.selectOption(this.accountTypeSelectLocator, accountType);
     await this.waitUntilAttached(this.firstFromAccountIdSelectOptionLocator);

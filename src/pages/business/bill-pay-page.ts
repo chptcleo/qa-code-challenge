@@ -25,40 +25,40 @@ export class BillPayPage extends BasePage {
     super(page);
     this.payeeNameInputLocator = this.page.locator("input[name='payee.name']");
     this.addressInputLocator = this.page.locator(
-      "input[name='payee.address.street']"
+      "input[name='payee.address.street']",
     );
     this.cityInputLocator = this.page.locator(
-      "input[name='payee.address.city']"
+      "input[name='payee.address.city']",
     );
     this.stateInputLocator = this.page.locator(
-      "input[name='payee.address.state']"
+      "input[name='payee.address.state']",
     );
     this.zipCodeInputLocator = this.page.locator(
-      "input[name='payee.address.zipCode']"
+      "input[name='payee.address.zipCode']",
     );
     this.phoneInputLocator = this.page.locator(
-      "input[name='payee.phoneNumber']"
+      "input[name='payee.phoneNumber']",
     );
     this.accountInputLocator = this.page.locator(
-      "input[name='payee.accountNumber']"
+      "input[name='payee.accountNumber']",
     );
     this.verifyAccountInputLocator = this.page.locator(
-      "input[name='verifyAccount']"
+      "input[name='verifyAccount']",
     );
     this.amountInputLocator = this.page.locator("input[name='amount']");
     this.fromAccountIdSelectLocator = this.page.locator(
-      "select[name='fromAccountId']"
+      "select[name='fromAccountId']",
     );
     this.sendPaymentButtonLocator = this.page.locator(
-      "input[value='Send Payment']"
+      "input[value='Send Payment']",
     );
     this.billPayCompleteMsgLocator = this.page.locator("#billpayResult .title");
     this.payeeNameResultSpanLocator = this.page.locator(
-      "#billpayResult #payeeName"
+      "#billpayResult #payeeName",
     );
     this.amountResultSpanLocator = this.page.locator("#billpayResult #amount");
     this.fromAccountIdResultSpanLocator = this.page.locator(
-      "#billpayResult #fromAccountId"
+      "#billpayResult #fromAccountId",
     );
   }
 
@@ -83,7 +83,7 @@ export class BillPayPage extends BasePage {
     phone: string,
     account: string,
     amount: string,
-    fromAccountId: string
+    fromAccountId: string,
   ): Promise<void> {
     await this.fill(this.payeeNameInputLocator, payeeName);
     await this.fill(this.addressInputLocator, address);
@@ -95,6 +95,7 @@ export class BillPayPage extends BasePage {
     await this.fill(this.verifyAccountInputLocator, account);
     await this.fill(this.amountInputLocator, amount);
     await this.selectOption(this.fromAccountIdSelectLocator, fromAccountId);
+    await this.waitUntilVisible(this.sendPaymentButtonLocator);
     await this.click(this.sendPaymentButtonLocator);
   }
 

@@ -19,9 +19,15 @@ export class CustomerMenu extends BasePage {
   constructor(page: Page) {
     super(page);
     this.logoutLinkLocator = this.page.locator("//a[text()='Log Out']");
-    this.openNewAccountLinkLocator = this.page.locator("//a[text()='Open New Account']");
-    this.accountsOverviewLinkLocator = this.page.locator("//a[text()='Accounts Overview']");
-    this.transferFundsLinkLocator = this.page.locator("//a[text()='Transfer Funds']");
+    this.openNewAccountLinkLocator = this.page.locator(
+      "//a[text()='Open New Account']",
+    );
+    this.accountsOverviewLinkLocator = this.page.locator(
+      "//a[text()='Accounts Overview']",
+    );
+    this.transferFundsLinkLocator = this.page.locator(
+      "//a[text()='Transfer Funds']",
+    );
     this.billPayLinkLocator = this.page.locator("//a[text()='Bill Pay']");
   }
 

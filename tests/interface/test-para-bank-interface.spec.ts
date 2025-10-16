@@ -5,14 +5,14 @@ import { globalVars } from "../global-vars";
 test.describe.serial("Test Parabank Interface", () => {
   let apiContext: APIRequestContext;
   let jsessionId: string | undefined;
-  
+
   test.beforeAll(async () => {
     apiContext = await request.newContext({
       baseURL: getAppConfig().baseURL,
     });
 
     const loginResponse = await apiContext.post(
-      `/parabank/login.htm?username=${globalVars.username}&password=${globalVars.password}`
+      `/parabank/login.htm?username=${globalVars.username}&password=${globalVars.password}`,
     );
     expect(loginResponse.ok()).toBeTruthy();
 
@@ -33,7 +33,7 @@ test.describe.serial("Test Parabank Interface", () => {
       },
     });
     const response = await apiContext.get(
-      `/parabank/services_proxy/bank/accounts/${globalVars.accountNumber}/transactions/amount/${globalVars.billAmount}?timeout=30000`
+      `/parabank/services_proxy/bank/accounts/${globalVars.accountNumber}/transactions/amount/${globalVars.billAmount}?timeout=30000`,
     );
     expect(response.ok()).toBeTruthy();
 

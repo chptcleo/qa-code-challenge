@@ -28,6 +28,7 @@ Before setting up Jenkins, ensure you have:
 Install the following plugins through **Manage Jenkins** → **Manage Plugins**:
 
 #### 1. **NodeJS Plugin**
+
 - **Plugin Name**: NodeJS
 - **Purpose**: Manages Node.js installations and environments
 - **Installation**:
@@ -38,6 +39,7 @@ Install the following plugins through **Manage Jenkins** → **Manage Plugins**:
   5. Click **Install without restart**
 
 #### 2. **HTML Publisher Plugin**
+
 - **Plugin Name**: HTML Publisher
 - **Purpose**: Publishes HTML reports (Playwright test reports)
 - **Installation**:
@@ -47,6 +49,7 @@ Install the following plugins through **Manage Jenkins** → **Manage Plugins**:
   4. Click **Install without restart**
 
 #### 3. **Additional Recommended Plugins**
+
 Install these for enhanced functionality:
 
 ```
@@ -64,6 +67,7 @@ Build Timeout Plugin (for pipeline timeouts)
 ### Configure Node.js Tool
 
 1. **Navigate to Global Tool Configuration**:
+
    ```
    Jenkins Dashboard → Manage Jenkins → Global Tool Configuration
    ```
@@ -73,6 +77,7 @@ Build Timeout Plugin (for pipeline timeouts)
    - Click **Add NodeJS**
 
 3. **Configure Node22 Tool**:
+
    ```
    Name: Node22
    Install automatically: ✅ (checked)
@@ -81,6 +86,7 @@ Build Timeout Plugin (for pipeline timeouts)
    ```
 
 4. **Advanced Configuration** (Optional):
+
    ```
    Global npm packages refresh hours: 72
    ```
@@ -93,6 +99,7 @@ Build Timeout Plugin (for pipeline timeouts)
 ### Create New Pipeline Job
 
 1. **Create Job**:
+
    ```
    Jenkins Dashboard → New Item
    Item name: ParaBank-Automation-Tests
@@ -120,14 +127,14 @@ Build Timeout Plugin (for pipeline timeouts)
 
 The Jenkinsfile includes these build parameters:
 
-| Parameter | Type | Default | Options |
-|-----------|------|---------|---------|
-| `ENVIRONMENT` | Choice | `qa` | qa, dev, uat, prod |
-| `TEST_SUITE` | Choice | `e2e` | e2e, interface, smoke, regression, all |
-| `BROWSER` | Choice | `chromium` | chromium, firefox, webkit, all |
-| `TEST_FILTER` | String | (empty) | Custom test filters |
-| `WORKERS` | Choice | `1` | 1, 2, 4, auto |
-| `GENERATE_TRACE` | Boolean | `false` | true, false |
+| Parameter        | Type    | Default    | Options                                |
+| ---------------- | ------- | ---------- | -------------------------------------- |
+| `ENVIRONMENT`    | Choice  | `qa`       | qa, dev, uat, prod                     |
+| `TEST_SUITE`     | Choice  | `e2e`      | e2e, interface, smoke, regression, all |
+| `BROWSER`        | Choice  | `chromium` | chromium, firefox, webkit, all         |
+| `TEST_FILTER`    | String  | (empty)    | Custom test filters                    |
+| `WORKERS`        | Choice  | `1`        | 1, 2, 4, auto                          |
+| `GENERATE_TRACE` | Boolean | `false`    | true, false                            |
 
 ## 🌍 Environment Configuration
 
@@ -145,10 +152,10 @@ EMAIL_RECIPIENTS=qa-team@company.com
 
 ### Environment Variable Details
 
-| Variable | Purpose | Example Value |
-|----------|---------|---------------|
-| `ENV` | Default test environment | `qa` |
-| `EMAIL_RECIPIENTS` | Notification emails | `qa-team@company.com` |
+| Variable           | Purpose                  | Example Value         |
+| ------------------ | ------------------------ | --------------------- |
+| `ENV`              | Default test environment | `qa`                  |
+| `EMAIL_RECIPIENTS` | Notification emails      | `qa-team@company.com` |
 
 ## 📊 Build Triggers and Scheduling
 
@@ -157,18 +164,21 @@ EMAIL_RECIPIENTS=qa-team@company.com
 Configure these triggers for automated execution:
 
 #### 1. **SCM Polling**
+
 ```
 Poll SCM: H/15 * * * *
 Description: Check for code changes every 15 minutes
 ```
 
 #### 2. **Scheduled Builds**
+
 ```
 Build periodically: H 2 * * *
 Description: Daily regression run at 2 AM
 ```
 
 #### 3. **GitHub Webhooks** (Optional)
+
 - Enable "GitHub hook trigger for GITScm polling"
 - Configure webhook in GitHub repository settings
 

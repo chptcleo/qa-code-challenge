@@ -9,7 +9,9 @@
     "test:smoke": "npx playwright test --grep @smoke",
     "test:regression": "npx playwright test --grep @regression",
     "test:e2e": "npx playwright test tests/e2e",
-    "test:interface": "npx playwright test tests/interface"
+    "test:interface": "npx playwright test tests/interface",
+    "test:report": "npx playwright show-report",
+    "prettier": "npx prettier --write ."
   },
   "keywords": [],
   "author": "",

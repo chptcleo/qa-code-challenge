@@ -17,10 +17,10 @@ export class AccountsOverviewPage extends BasePage {
     this.navigator = new Navigator(page);
     this.customerMenu = new CustomerMenu(page);
     this.balanceItemLocator = this.page.locator(
-      "#showOverview #accountTable tbody tr"
+      "#showOverview #accountTable tbody tr",
     );
     this.firstBalanceItemLocator = this.page.locator(
-      "#showOverview #accountTable tbody tr:first-child"
+      "#showOverview #accountTable tbody tr:first-child",
     );
   }
 

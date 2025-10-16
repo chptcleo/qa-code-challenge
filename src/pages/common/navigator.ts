@@ -16,25 +16,25 @@ export class Navigator extends BasePage {
   constructor(page: Page) {
     super(page);
     this.solutionsLinkLocator = this.page.locator(
-      "//ul[@class='leftmenu']/li[text()='Solutions']"
+      "//ul[@class='leftmenu']/li[text()='Solutions']",
     );
     this.aboutUsLinkLocator = this.page.locator(
-      "//ul[@class='leftmenu']/li/a[text()='About Us']"
+      "//ul[@class='leftmenu']/li/a[text()='About Us']",
     );
     this.servicesLinkLocator = this.page.locator(
-      "//ul[@class='leftmenu']/li/a[text()='Services']"
+      "//ul[@class='leftmenu']/li/a[text()='Services']",
     );
     this.productsLinkLocator = this.page.locator(
-      "//ul[@class='leftmenu']/li/a[text()='Products']"
+      "//ul[@class='leftmenu']/li/a[text()='Products']",
     );
     this.locationsLinkLocator = this.page.locator(
-      "//ul[@class='leftmenu']/li/a[text()='Locations']"
+      "//ul[@class='leftmenu']/li/a[text()='Locations']",
     );
     this.adminPageLinkLocator = this.page.locator(
-      "//ul[@class='leftmenu']/li/a[text()='Admin Page']"
+      "//ul[@class='leftmenu']/li/a[text()='Admin Page']",
     );
     this.billPayLinkLocator = this.page.locator(
-      "//ul[@class='leftmenu']/li/a[text()='Bill Pay']"
+      "//ul[@class='leftmenu']/li/a[text()='Bill Pay']",
     );
   }
 

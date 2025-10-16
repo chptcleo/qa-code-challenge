@@ -29,26 +29,26 @@ export class RegisterPage extends BasePage {
     this.firstNameInputLocator = this.page.locator("[id='customer.firstName']");
     this.lastNameInputLocator = this.page.locator("[id='customer.lastName']");
     this.addressInputLocator = this.page.locator(
-      "[id='customer.address.street']"
+      "[id='customer.address.street']",
     );
     this.cityInputLocator = this.page.locator("[id='customer.address.city']");
     this.stateInputLocator = this.page.locator("[id='customer.address.state']");
     this.zipCodeInputLocator = this.page.locator(
-      "[id='customer.address.zipCode']"
+      "[id='customer.address.zipCode']",
     );
     this.phoneInputLocator = this.page.locator("[id='customer.phoneNumber']");
     this.ssnInputLocator = this.page.locator("[id='customer.ssn']");
     this.usernameInputLocator = this.page.locator("[id='customer.username']");
     this.passwordInputLocator = this.page.locator("[id='customer.password']");
     this.repeatPasswordInputLocator = this.page.locator(
-      "[id='repeatedPassword']"
+      "[id='repeatedPassword']",
     );
     this.registerButtonLocator = this.page.locator("input[value='Register']");
 
     this.welcomeMsgLocator = this.page.locator("#rightPanel .title");
     this.promptMsgLocator = this.page.locator("#rightPanel p");
 
-    this.customerMenu = new CustomerMenu(page);    
+    this.customerMenu = new CustomerMenu(page);
   }
 
   /**
@@ -74,7 +74,7 @@ export class RegisterPage extends BasePage {
     phone: string,
     ssn: string,
     username: string,
-    password: string
+    password: string,
   ): Promise<void> {
     await this.fill(this.firstNameInputLocator, firstName);
     await this.fill(this.lastNameInputLocator, lastName);

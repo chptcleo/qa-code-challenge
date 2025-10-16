@@ -19,12 +19,20 @@ export class TransferFundsPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.amountInputLocator = this.page.locator("#transferForm #amount");
-    this.fromAccountIdSelectLocator = this.page.locator("#transferForm #fromAccountId");
-    this.toAccountIdSelectLocator = this.page.locator("#transferForm #toAccountId");
+    this.fromAccountIdSelectLocator = this.page.locator(
+      "#transferForm #fromAccountId",
+    );
+    this.toAccountIdSelectLocator = this.page.locator(
+      "#transferForm #toAccountId",
+    );
     this.transferButtonLocator = this.page.locator("input[value='Transfer']");
     this.transferCompleteMsgLocator = this.page.locator("#showResult .title");
-    this.transferAmountResultSpanLocator = this.page.locator("#showResult #amountResult");
-    this.fromAccountIdResultSpanLocator = this.page.locator("#showResult #fromAccountIdResult");
+    this.transferAmountResultSpanLocator = this.page.locator(
+      "#showResult #amountResult",
+    );
+    this.fromAccountIdResultSpanLocator = this.page.locator(
+      "#showResult #fromAccountIdResult",
+    );
     this.customerMenu = new CustomerMenu(page);
   }
 
@@ -34,7 +42,11 @@ export class TransferFundsPage extends BasePage {
    * @param fromAccountId The account ID to transfer from
    * @param toAccountId The account ID to transfer to
    */
-  async transferFunds(amount: string, fromAccountId: string, toAccountId: string = ""): Promise<void> {
+  async transferFunds(
+    amount: string,
+    fromAccountId: string,
+    toAccountId: string = "",
+  ): Promise<void> {
     await this.fill(this.amountInputLocator, amount);
     await this.selectOption(this.fromAccountIdSelectLocator, fromAccountId);
     if (toAccountId.length > 0) {

@@ -74,7 +74,10 @@ export class BasePage {
    * @param locator - The locator to wait for
    * @param timeout - Maximum time to wait in milliseconds (default: 10000)
    */
-  async waitUntilVisible(locator: Locator, timeout: number = 10000): Promise<void> {
+  async waitUntilVisible(
+    locator: Locator,
+    timeout: number = 10000,
+  ): Promise<void> {
     await locator.waitFor({ state: "visible", timeout });
   }
 
@@ -83,7 +86,10 @@ export class BasePage {
    * @param locator - The locator to wait for
    * @param timeout - Maximum time to wait in milliseconds (default: 10000)
    */
-  async waitUntilAttached(locator: Locator, timeout: number = 10000): Promise<void> {
+  async waitUntilAttached(
+    locator: Locator,
+    timeout: number = 10000,
+  ): Promise<void> {
     await locator.waitFor({ state: "attached", timeout });
   }
 

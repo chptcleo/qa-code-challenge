@@ -18,6 +18,7 @@ A comprehensive end-to-end test automation framework built with Playwright and T
 This test automation framework is designed to provide comprehensive testing coverage for the ParaBank banking application. It follows the Page Object Model (POM) design pattern and includes support for multiple test environments, browsers, and test execution modes.
 
 ### Target Application
+
 - **Application**: ParaBank (Parasoft's Demo Banking Application)
 - **URL**: https://parabank.parasoft.com
 - **Purpose**: Banking application testing and demonstration
@@ -25,23 +26,27 @@ This test automation framework is designed to provide comprehensive testing cove
 ## ✨ Core Features
 
 ### 🏗️ **Architecture & Design Patterns**
+
 - **Page Object Model (POM)** - Organized, maintainable page classes
 - **TypeScript** - Type-safe test development
 - **Modular Design** - Reusable components and utilities
 - **Environment Configuration** - Multi-environment support (dev, qa, uat, prod)
 
 ### 🧪 **Test Coverage**
+
 - **End-to-End (E2E) Tests** - Complete user workflows
 - **Interface Tests** - Backend service validation
 - **Smoke Tests** - Critical functionality validation
 - **Regression Tests** - Full application regression testing
 
 ### 🌐 **Browser Support**
+
 - **Chromium** (Chrome, Edge)
 - **Firefox**
 - **WebKit** (Safari)
 
 ### 🔧 **Testing Features**
+
 - **Random Test Data Generation** - Dynamic usernames and data
 - **Multi-Environment Configuration** - Easy environment switching
 - **Screenshot & Video Capture** - On test failures
@@ -101,12 +106,14 @@ Before setting up the project, ensure you have the following installed:
 ## 🛠️ Setup Instructions
 
 ### 1. Clone the Repository
+
 ```bash
 git clone git@github.com:chptcleo/qa-code-challenge.git
 cd qa-code-challenge
 ```
 
 ### 2. Install Dependencies
+
 ```bash
 # Install npm dependencies
 npm install
@@ -119,6 +126,7 @@ npx playwright install-deps
 ```
 
 ### 3. Verify Installation
+
 ```bash
 # Check Playwright installation
 npx playwright --version
@@ -131,6 +139,7 @@ npm run test:smoke
 ```
 
 ### 4. Environment Configuration
+
 The framework supports multiple environments. Set your target environment:
 
 ```bash
@@ -195,6 +204,7 @@ npx playwright test --timeout=60000
 ## ⚙️ Configuration
 
 ### Environment Configuration
+
 Environment-specific settings are stored in `src/config/`:
 
 ```json
@@ -204,28 +214,30 @@ Environment-specific settings are stored in `src/config/`:
 ```
 
 ### Playwright Configuration
+
 Main configuration in `playwright.config.ts`:
 
 ```typescript
 export default defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   fullyParallel: true,
   retries: process.env.CI ? 2 : 0,
   workers: 1,
-  reporter: 'html',
+  reporter: "html",
   use: {
     baseURL: getAppConfig().baseURL,
     headless: true,
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    trace: 'on-first-retry'
-  }
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
+    trace: "on-first-retry",
+  },
 });
 ```
 
 ## 📊 Reporting
 
 ### HTML Reports
+
 After test execution, view detailed reports:
 
 ```bash
@@ -237,6 +249,7 @@ open playwright-report/index.html
 ```
 
 ### Report Features
+
 - **Test Results**: Pass/fail status with details
 - **Screenshots**: Visual evidence of failures
 - **Videos**: Test execution recordings
@@ -244,6 +257,7 @@ open playwright-report/index.html
 - **Performance Metrics**: Test execution timings
 
 ### Artifacts
+
 - **Reports**: `playwright-report/`
 - **Screenshots**: `test-results/`
 - **Videos**: `test-results/`
@@ -252,12 +266,14 @@ open playwright-report/index.html
 ## 🤝 Contributing
 
 ### Development Workflow
+
 1. Create feature branch
 2. Write tests following existing patterns
 3. Run tests locally
 4. Submit pull request
 
 ### Code Standards
+
 - Follow TypeScript best practices
 - Use Page Object Model pattern
 - Add meaningful test descriptions
@@ -265,18 +281,22 @@ open playwright-report/index.html
 - Write clean, maintainable code
 
 ### Adding New Tests
+
 1. Create page objects in `src/pages/`
 2. Add test files in appropriate `tests/` subdirectory
 3. Update configuration if needed
 4. Add test tags for categorization
 
 ### Documentation Links
+
 - [Playwright Documentation](https://playwright.dev/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [ParaBank Application](https://parabank.parasoft.com)
 
 ### Support
+
 For questions or issues:
+
 1. Check existing documentation
 2. Review test execution logs
 3. Check Playwright troubleshooting guide

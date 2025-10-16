@@ -31,12 +31,14 @@ test.describe.serial("Test Parabank E2E", () => {
       testData.user_info.phone,
       testData.user_info.ssn,
       globalVars.username,
-      testData.user_info.password
+      testData.user_info.password,
     );
     await expect(page).toHaveTitle(/Customer Created/);
-    expect(await registerPage.getWelcomeMessage()).toBe(`Welcome ${globalVars.username}`);
+    expect(await registerPage.getWelcomeMessage()).toBe(
+      `Welcome ${globalVars.username}`,
+    );
     expect(await registerPage.getPromptMessage()).toBe(
-      "Your account was created successfully. You are now logged in."
+      "Your account was created successfully. You are now logged in.",
     );
 
     // Logout
@@ -48,7 +50,7 @@ test.describe.serial("Test Parabank E2E", () => {
     // Login first
     let accountsOverviewPage = await loginPage.login(
       globalVars.username,
-      testData.user_info.password
+      testData.user_info.password,
     );
     await expect(page).toHaveTitle(/Accounts Overview/);
 
@@ -83,7 +85,7 @@ test.describe.serial("Test Parabank E2E", () => {
     // Login first
     let accountsOverviewPage = await loginPage.login(
       globalVars.username,
-      testData.user_info.password
+      testData.user_info.password,
     );
     await expect(page).toHaveTitle(/Accounts Overview/);
 
@@ -116,11 +118,11 @@ test.describe.serial("Test Parabank E2E", () => {
 
     await transferFundsPage.transferFunds("1", newAccountNumber);
     expect(await transferFundsPage.getTransferCompleteMessage()).toBe(
-      "Transfer Complete!"
+      "Transfer Complete!",
     );
     expect(await transferFundsPage.getTransferAmountResult()).toBe("$1.00");
     expect(await transferFundsPage.getFromAccountIdResult()).toBe(
-      newAccountNumber
+      newAccountNumber,
     );
 
     // Pay Bill
@@ -136,17 +138,17 @@ test.describe.serial("Test Parabank E2E", () => {
       testData.payee_info.phone,
       testData.payee_info.account,
       testData.payee_info.amount,
-      newAccountNumber
+      newAccountNumber,
     );
     expect(await billPayPage.getBillPayCompleteMessage()).toBe(
-      "Bill Payment Complete"
+      "Bill Payment Complete",
     );
 
     expect(await billPayPage.getPayeeNameResult()).toBe(
-      testData.payee_info.payee_name
+      testData.payee_info.payee_name,
     );
     expect(await billPayPage.getAmountResult()).toBe(
-      `$${testData.payee_info.amount}.00`
+      `$${testData.payee_info.amount}.00`,
     );
     expect(await billPayPage.getFromAccountIdResult()).toBe(newAccountNumber);
     globalVars.billAmount = testData.payee_info.amount;
