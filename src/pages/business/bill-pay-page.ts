@@ -95,7 +95,7 @@ export class BillPayPage extends BasePage {
     await this.fill(this.verifyAccountInputLocator, account);
     await this.fill(this.amountInputLocator, amount);
     await this.selectOption(this.fromAccountIdSelectLocator, fromAccountId);
-    await this.waitUntilVisible(this.sendPaymentButtonLocator);
+    await this.waitForTimeout(500);
     await this.click(this.sendPaymentButtonLocator);
   }
 

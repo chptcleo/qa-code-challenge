@@ -2,6 +2,11 @@ import { test, expect, request, APIRequestContext } from "@playwright/test";
 import { getAppConfig } from "../../src/utils/config-util";
 import { globalVars } from "../global-vars";
 
+interface Transaction {
+  accountId: number;
+  amount: number;
+}
+
 test.describe.serial("Test Parabank Interface", () => {
   let apiContext: APIRequestContext;
   let jsessionId: string | undefined;
@@ -39,7 +44,7 @@ test.describe.serial("Test Parabank Interface", () => {
 
     // Sometimes the interface returns an empty array even if response status code is 200
     const body = await response.json();
-    body.forEach((transaction: any) => {
+    body.forEach((transaction: Transaction) => {
       expect(String(transaction.accountId)).toEqual(globalVars.accountNumber);
       expect(String(transaction.amount)).toEqual(globalVars.billAmount);
     });

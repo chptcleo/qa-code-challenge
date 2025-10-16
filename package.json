@@ -11,6 +11,8 @@
     "test:e2e": "npx playwright test tests/e2e",
     "test:interface": "npx playwright test tests/interface",
     "test:report": "npx playwright show-report",
+    "eslint:check": "npx eslint .",
+    "eslint:fix": "npx eslint . --fix",
     "prettier": "npx prettier --write ."
   },
   "keywords": [],
@@ -20,7 +22,12 @@
   "devDependencies": {
     "@playwright/test": "^1.55.0",
     "@types/node": "^24.3.1",
-    "eslint": "^9.34.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "eslint": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "jiti": "^2.6.1",
     "playwright": "^1.55.0",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",

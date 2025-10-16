@@ -4,7 +4,6 @@ A comprehensive end-to-end test automation framework built with Playwright and T
 
 ## 📋 Table of Contents
 
-- [Project Overview](#-project-overview)
 - [Core Features](#-core-features)
 - [Project Structure](#-project-structure)
 - [Prerequisites](#-prerequisites)
@@ -25,75 +24,14 @@ This test automation framework is designed to provide comprehensive testing cove
 
 ## ✨ Core Features
 
-### 🏗️ **Architecture & Design Patterns**
-
-- **Page Object Model (POM)** - Organized, maintainable page classes
-- **TypeScript** - Type-safe test development
-- **Modular Design** - Reusable components and utilities
-- **Environment Configuration** - Multi-environment support (dev, qa, uat, prod)
-
-### 🧪 **Test Coverage**
-
-- **End-to-End (E2E) Tests** - Complete user workflows
-- **Interface Tests** - Backend service validation
-- **Smoke Tests** - Critical functionality validation
-- **Regression Tests** - Full application regression testing
-
-### 🌐 **Browser Support**
-
-- **Chromium** (Chrome, Edge)
-- **Firefox**
-- **WebKit** (Safari)
-
-### 🔧 **Testing Features**
-
-- **Random Test Data Generation** - Dynamic usernames and data
-- **Multi-Environment Configuration** - Easy environment switching
-- **Screenshot & Video Capture** - On test failures
-- **Parallel Test Execution** - Faster test runs
-- **Test Tagging** - Selective test execution (@smoke, @regression)
-
-## 📁 Project Structure
-
-```
-qa-code-challenge/
-├── src/                          # Source code
-│   ├── config/                   # Environment configurations
-│   │   ├── dev.json             # Development environment
-│   │   ├── qa.json              # QA environment
-│   │   ├── uat.json             # UAT environment
-│   │   └── prod.json            # Production environment
-│   ├── pages/                    # Page Object Model classes
-│   │   ├── account/             # Account-related pages
-│   │   │   ├── accounts-overview-page.ts
-│   │   │   └── open-new-account-page.ts
-│   │   ├── business/            # Business transaction pages
-│   │   │   ├── bill-pay-page.ts
-│   │   │   └── transfer-funds-page.ts
-│   │   ├── common/              # Shared components
-│   │   │   ├── base-page.ts     # Base page class
-│   │   │   ├── customer-menu.ts # Customer navigation
-│   │   │   └── navigator.ts     # Main navigation
-│   │   └── user/                # User management pages
-│   │       ├── login-page.ts
-│   │       └── register-page.ts
-│   └── utils/                    # Utility functions
-│       ├── config-util.ts       # Configuration management
-│       └── string-util.ts       # String manipulation utilities
-├── tests/                        # Test suites
-│   ├── e2e/                     # End-to-end tests
-│   │   ├── test-para-bank-e2e.spec.ts
-│   │   └── test-para-bank-e2e.json
-│   ├── interface/               # Interface tests
-│   │   └── test-para-bank-interface.spec.ts
-│   └── global-vars.ts           # Global test variables
-├── playwright-report/            # Generated test reports
-├── test-results/                # Test execution artifacts
-├── playwright.config.ts         # Playwright configuration
-├── package.json                 # Dependencies and scripts
-├── tsconfig.json               # TypeScript configuration
-└── README.md                   # This file
-```
+- **TypeScript & Page Object Model** - Type-safe, maintainable test architecture
+- **Multi-Environment Support** - Test across dev, qa, uat, and prod environments
+- **Cross-Browser Testing** - Chromium, Firefox, and WebKit support
+- **Comprehensive Test Types** - E2E, Interface, Smoke, and Regression tests
+- **Smart Test Data** - Random data generation for reliable test execution
+- **Rich Reporting** - Screenshots, videos, and traces for debugging
+- **CI/CD Ready** - Jenkins integration with automated pipelines
+- **Code Quality** - ESLint and Prettier for consistent code standards
 
 ## 📋 Prerequisites
 
@@ -185,22 +123,6 @@ npx playwright test --grep="registration"
 npx playwright test --debug
 ```
 
-### Test Execution Examples
-
-```bash
-# Example 1: Run smoke tests in QA environment
-ENV=qa npm run test:smoke
-
-# Example 2: Run regression tests with headed browser
-npm run test:regression -- --headed
-
-# Example 3: Run specific test with debug mode
-npx playwright test tests/e2e/test-para-bank-e2e.spec.ts --debug
-
-# Example 4: Run tests with custom timeout
-npx playwright test --timeout=60000
-```
-
 ## ⚙️ Configuration
 
 ### Environment Configuration
@@ -213,27 +135,6 @@ Environment-specific settings are stored in `src/config/`:
 }
 ```
 
-### Playwright Configuration
-
-Main configuration in `playwright.config.ts`:
-
-```typescript
-export default defineConfig({
-  testDir: "./tests",
-  fullyParallel: true,
-  retries: process.env.CI ? 2 : 0,
-  workers: 1,
-  reporter: "html",
-  use: {
-    baseURL: getAppConfig().baseURL,
-    headless: true,
-    screenshot: "only-on-failure",
-    video: "retain-on-failure",
-    trace: "on-first-retry",
-  },
-});
-```
-
 ## 📊 Reporting
 
 ### HTML Reports
@@ -242,10 +143,7 @@ After test execution, view detailed reports:
 
 ```bash
 # Open latest report
-npx playwright show-report
-
-# Report location
-open playwright-report/index.html
+npm run test:report
 ```
 
 ### Report Features
@@ -262,46 +160,5 @@ open playwright-report/index.html
 - **Screenshots**: `test-results/`
 - **Videos**: `test-results/`
 - **Traces**: `test-results/`
-
-## 🤝 Contributing
-
-### Development Workflow
-
-1. Create feature branch
-2. Write tests following existing patterns
-3. Run tests locally
-4. Submit pull request
-
-### Code Standards
-
-- Follow TypeScript best practices
-- Use Page Object Model pattern
-- Add meaningful test descriptions
-- Include appropriate test tags
-- Write clean, maintainable code
-
-### Adding New Tests
-
-1. Create page objects in `src/pages/`
-2. Add test files in appropriate `tests/` subdirectory
-3. Update configuration if needed
-4. Add test tags for categorization
-
-### Documentation Links
-
-- [Playwright Documentation](https://playwright.dev/)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [ParaBank Application](https://parabank.parasoft.com)
-
-### Support
-
-For questions or issues:
-
-1. Check existing documentation
-2. Review test execution logs
-3. Check Playwright troubleshooting guide
-4. Create issue in project repository
-
----
 
 **Happy Testing! 🎯**
