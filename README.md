@@ -5,12 +5,10 @@ A comprehensive end-to-end test automation framework built with Playwright and T
 ## 📋 Table of Contents
 
 - [Core Features](#-core-features)
-- [Project Structure](#-project-structure)
 - [Prerequisites](#-prerequisites)
 - [Setup Instructions](#️-setup-instructions)
 - [Running Tests](#-running-tests)
 - [Reporting](#-reporting)
-- [Contributing](#-contributing)
 
 ## 🚀 Project Overview
 
