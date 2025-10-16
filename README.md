@@ -55,10 +55,10 @@ cd qa-code-challenge
 npm install
 
 # Install Playwright browsers
-npx playwright install
+npx playwright install chromium
 
 # Install system dependencies (Linux only)
-npx playwright install-deps
+npx playwright install-deps chromium
 ```
 
 ### 3. Verify Installation
@@ -85,7 +85,7 @@ export ENV=qa  # or dev, uat, prod
 
 ## 🏃 Running Tests
 
-### Basic Test Execution
+### Test Execution
 
 ```bash
 # Run all tests
@@ -100,25 +100,7 @@ npm run test:interface  # Interface tests
 
 # Run tests by tags
 npm run test:smoke      # Smoke tests only
-npm run test:regression # Regression tests only
-```
-
-### Advanced Test Execution
-
-```bash
-# Run tests in specific browser
-npx playwright test --project=chromium
-npx playwright test --project=firefox
-npx playwright test --project=webkit
-
-# Run specific test file
-npx playwright test tests/e2e/test-para-bank-e2e.spec.ts
-
-# Run tests with custom grep pattern
-npx playwright test --grep="registration"
-
-# Debug mode (step-by-step execution)
-npx playwright test --debug
+npm run test:regression # Regression tests only    
 ```
 
 ## ⚙️ Configuration
