@@ -12,6 +12,7 @@ test.describe.serial("Test Parabank Interface", () => {
   let jsessionId: string | undefined;
 
   test.beforeAll(async () => {
+    // Call API to get JSESSIONID
     apiContext = await request.newContext({
       baseURL: getAppConfig().baseURL,
     });

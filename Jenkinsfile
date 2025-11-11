@@ -36,11 +36,6 @@ pipeline {
             choices: ['chromium', 'firefox', 'webkit', 'all'],
             description: 'Browser for test execution'
         )
-        string(
-            name: 'TEST_FILTER',
-            defaultValue: '',
-            description: 'Filter tests by name or tag (e.g., "registration" or "@smoke")'
-        )
         choice(
             name: 'WORKERS',
             choices: ['1', '2', '4', 'auto'],
@@ -72,7 +67,6 @@ pipeline {
                     echo "Test Suite: ${params.TEST_SUITE}"
                     echo "Browser: ${params.BROWSER}"
                     echo "Workers: ${params.WORKERS}"
-                    echo "Test Filter: ${params.TEST_FILTER}"
                     echo "Generate Trace: ${params.GENERATE_TRACE}"
                     echo "======================================"
                     
@@ -142,7 +136,7 @@ pipeline {
                             npm cache clean --force || true
                             
                             # Install dependencies
-                            npm install
+                            npm ci
                             
                             # Verify Playwright installation
                             npx playwright --version
@@ -229,91 +223,115 @@ pipeline {
                     }
                 }
             }
-            post {
-                always {
-                    script {
-                        // Archive test artifacts
-                        echo "📊 Archiving test artifacts..."
-                        
-                        if (fileExists('playwright-report')) {
-                            archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
-                        }
-                        
-                        if (fileExists('test-results')) {
-                            archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
-                        }
-                        
-                    }
-                }
-            }
         }
         
-        stage('Generate Reports') {
-            steps {
-                echo "📈 Generating and publishing test reports..."
-                script {
-                    try {
-                        // Publish HTML reports
-                        if (fileExists('playwright-report/index.html')) {
-                            publishHTML([
-                                allowMissing: false,
-                                alwaysLinkToLastBuild: true,
-                                keepAll: true,
-                                reportDir: 'playwright-report',
-                                reportFiles: 'index.html',
-                                reportName: 'Playwright Test Report',
-                                reportTitles: "ParaBank Test Results - ${params.ENVIRONMENT}",
-                                includes: '**/*'
-                            ])
-                            echo "✅ HTML report published successfully"
-                        } else {
-                            echo "⚠️ No HTML report found to publish"
-                        }
-                        
-                        // Generate test summary
-                        generateTestSummary()
-                        
-                    } catch (Exception e) {
-                        echo "⚠️ Failed to publish reports: ${e.getMessage()}"
-                        currentBuild.result = 'UNSTABLE'
-                    }
-                }
-            }
-        }
     }
     
     post {
         always {
-
-            publishHTML(target: [
-                reportName : 'Playwright Report',
-                reportDir  : 'playwright-report',
-                reportFiles: 'index.html',
-                keepAll    : true,
-                alwaysLinkToLastBuild: true,
-                allowMissing: true
-            ])
-
             script {
-                echo "🏁 Pipeline execution completed"
+                // Archive test artifacts first
+                echo "📊 Archiving test artifacts..."
                 
-                // Cleanup workspace if configured
-                if (env.CLEAN_WORKSPACE == 'true') {
-                    echo "🧹 Cleaning workspace..."
-                    cleanWs()
+                if (fileExists('playwright-report')) {
+                    echo "✅ Playwright report found, archiving..."
+                    archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
+                }
+                
+                if (fileExists('test-results')) {
+                    archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+                }
+                
+            }
+
+            // Publish HTML Report with enhanced configuration for Playwright
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'playwright-report',
+                reportFiles: 'index.html',
+                reportName: 'Playwright Test Report',
+                reportTitles: "ParaBank Test Results - ${params.ENVIRONMENT} - Build #${env.BUILD_NUMBER}",
+                includes: '**/*',
+                escapeUnderscores: false
+            ])
+            
+            script {
+                // Create comprehensive report access information
+                def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
+                
+                // Add styled link to build description
+                def reportLink = "<br/><div style='background-color: #e8f4fd; padding: 10px; border-left: 4px solid #0066cc; margin: 10px 0;'>" +
+                               "📊 <strong>Test Report:</strong> " +
+                               "<a href='${reportUrl}' target='_blank' style='color: #0066cc; font-weight: bold; text-decoration: none;'>" +
+                               "🔗 Click Here to View Interactive Report</a>" +
+                               "</div>"
+                
+                def currentDesc = currentBuild.description ?: ''
+                currentBuild.description = currentDesc + reportLink
+                
+                echo """
+                ========================================
+                📊 PLAYWRIGHT REPORT ACCESS GUIDE
+                ========================================
+                
+                🎯 Primary Method - Jenkins Web Interface:
+                1. Click the blue "🔗 Click Here to View Interactive Report" link above
+                2. OR go to: ${reportUrl}
+                3. OR use sidebar: "Playwright Test Report" link
+                
+                📁 Report Structure:
+                - Main file: index.html (interactive report)
+                - Data folder: contains test results and assets
+                - Media: screenshots, videos, traces
+                
+                ✨ Report Features:
+                ✅ Interactive test results with filters
+                ✅ Screenshots for failed tests  
+                ✅ Video recordings of test execution
+                ✅ Execution traces for debugging
+                ✅ Performance metrics and timings
+                ✅ Search and filter capabilities
+                
+                🔧 Alternative Access (if needed):
+                - Archived artifacts: Available in build artifacts
+                - Direct file access: Via Jenkins file browser
+                
+                💡 Note: This replaces "npx playwright show-report" 
+                    command with web-based access through Jenkins!
+                ========================================
+                """
+                
+                // Verify report generation
+                if (fileExists('playwright-report/index.html')) {
+                    echo "✅ Report verification: index.html found and published"
+                    
+                    // Check for data folder
+                    if (fileExists('playwright-report/data')) {
+                        echo "✅ Report verification: data folder found with test assets"
+                    } else {
+                        echo "⚠️ Report verification: data folder not found"
+                    }
+                } else {
+                    echo "❌ Report verification: index.html not found!"
+                    currentBuild.result = 'UNSTABLE'
                 }
             }
+
         }
         
         success {
             script {
                 echo "✅ All tests passed successfully!"
                 
-                // Send success notification
-                sendNotification('SUCCESS', '✅ ParaBank tests passed successfully')
+                // Send success notification with report link
+                def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
+                sendNotification('SUCCESS', "✅ ParaBank tests passed successfully!\n📊 View Report: ${reportUrl}")
                 
-                // Update build description
-                currentBuild.description = "✅ Tests passed on ${params.ENVIRONMENT} using ${params.BROWSER}"
+                // Update build description with success status and report link
+                def baseDesc = "✅ Tests passed on ${params.ENVIRONMENT} using ${params.BROWSER}"
+                currentBuild.description = baseDesc
             }
         }
         
@@ -321,11 +339,13 @@ pipeline {
             script {
                 echo "❌ Test execution failed!"
                 
-                // Send failure notification
-                sendNotification('FAILURE', '❌ ParaBank tests failed')
+                // Send failure notification with report link
+                def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
+                sendNotification('FAILURE', "❌ ParaBank tests failed!\n📊 View Report: ${reportUrl}")
                 
-                // Update build description
-                currentBuild.description = "❌ Tests failed on ${params.ENVIRONMENT} using ${params.BROWSER}"
+                // Update build description with failure status
+                def baseDesc = "❌ Tests failed on ${params.ENVIRONMENT} using ${params.BROWSER}"
+                currentBuild.description = baseDesc
             }
         }
         
@@ -384,12 +404,6 @@ def buildTestCommand() {
         command += " --project=${params.BROWSER}"
     }
     
-    // Add test filter
-    if (params.TEST_FILTER) {
-        command += " --grep='${params.TEST_FILTER}'"
-        
-    }
-    
     // Add workers
     if (params.WORKERS && params.WORKERS != 'auto') {
         command += " --workers=${params.WORKERS}"
@@ -401,35 +415,6 @@ def buildTestCommand() {
     }
 
     return command
-}
-
-// Helper function to generate test summary
-def generateTestSummary() {
-    try {
-        def summary = """
-        📊 Test Execution Summary
-        ========================
-        Environment: ${params.ENVIRONMENT}
-        Test Suite: ${params.TEST_SUITE}
-        Browser: ${params.BROWSER}
-        Build Number: ${env.BUILD_NUMBER}
-        Git Commit: ${env.GIT_COMMIT_SHORT}
-        Execution Time: ${currentBuild.durationString}
-        Status: ${currentBuild.result ?: 'SUCCESS'}
-        
-        📁 Artifacts:
-        - HTML Report: Available in build artifacts
-        - Screenshots: Available for failed tests
-        - Videos: Available for failed tests
-        ${params.GENERATE_TRACE ? '- Trace Files: Available for debugging' : ''}
-        """
-        
-        writeFile file: 'test-summary.txt', text: summary
-        archiveArtifacts artifacts: 'test-summary.txt', fingerprint: true
-        
-    } catch (Exception e) {
-        echo "Failed to generate test summary: ${e.getMessage()}"
-    }
 }
 
 // Helper function to send notifications
