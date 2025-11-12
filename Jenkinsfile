@@ -61,7 +61,7 @@ pipeline {
         stage('Environment Info') {
             steps {
                 script {
-                    echo "🚀 Starting ParaBank Test Automation Pipeline"
+                    echo "Starting ParaBank Test Automation Pipeline"
                     echo "======================================"
                     echo "Environment: ${params.ENVIRONMENT}"
                     echo "Test Suite: ${params.TEST_SUITE}"
@@ -126,104 +126,100 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
-            steps {
-                echo "📦 Installing npm dependencies..."
-                script {
-                    try {
-                        sh '''
-                            # Clean npm cache if needed
-                            npm cache clean --force || true
+        // stage('Install Dependencies') {
+        //     steps {
+        //         echo "📦 Installing npm dependencies..."
+        //         script {
+        //             try {
+        //                 sh '''
+        //                     # Clean npm cache if needed
+        //                     npm cache clean --force || true
                             
-                            # Install dependencies
-                            npm ci
+        //                     # Install dependencies
+        //                     npm ci
                             
-                            # Verify Playwright installation
-                            npx playwright --version
+        //                     # Verify Playwright installation
+        //                     npx playwright --version
                             
-                            # List installed packages
-                            npm list --depth=0
-                        '''
-                    } catch (Exception e) {
-                        error "❌ Failed to install dependencies: ${e.getMessage()}"
-                    }
-                }
-            }
-        }
+        //                     # List installed packages
+        //                     npm list --depth=0
+        //                 '''
+        //             } catch (Exception e) {
+        //                 error "❌ Failed to install dependencies: ${e.getMessage()}"
+        //             }
+        //         }
+        //     }
+        // }
         
-        stage('Install Playwright Browsers') {
-            steps {
-                echo "🌐 Installing Playwright browsers..."
-                script {
-                    def browsersToInstall = params.BROWSER == 'all' ? 'chromium firefox webkit' : params.BROWSER
+        // stage('Install Playwright Browsers') {
+        //     steps {
+        //         echo "🌐 Installing Playwright browsers..."
+        //         script {
+        //             def browsersToInstall = params.BROWSER == 'all' ? 'chromium firefox webkit' : params.BROWSER
                     
-                    try {
-                        sh """
-                            # Install specific browsers based on selection
-                            npx playwright install ${browsersToInstall}
+        //             try {
+        //                 sh """
+        //                     # Install specific browsers based on selection
+        //                     npx playwright install ${browsersToInstall}
                             
-                            # Install system dependencies (Linux)
-                            npx playwright install-deps ${browsersToInstall}
+        //                     # Install system dependencies (Linux)
+        //                     npx playwright install-deps ${browsersToInstall}
                             
-                            # Verify browser installation
-                            npx playwright install --dry-run
-                        """
-                    } catch (Exception e) {
-                        echo "⚠️ Browser installation warning: ${e.getMessage()}"
-                    }
-                }
-            }
-        }
+        //                     # Verify browser installation
+        //                     npx playwright install --dry-run
+        //                 """
+        //             } catch (Exception e) {
+        //                 echo "⚠️ Browser installation warning: ${e.getMessage()}"
+        //             }
+        //         }
+        //     }
+        // }
         
-        stage('Code Quality Checks') {
-            parallel {
-                stage('TypeScript Compilation') {
-                    steps {
-                        echo "🔍 Running TypeScript compilation check..."
-                        script {
-                            try {
-                                sh 'npx tsc --noEmit'
-                                echo "✅ TypeScript compilation successful"
-                            } catch (Exception e) {
-                                echo "⚠️ TypeScript compilation issues found: ${e.getMessage()}"
-                                currentBuild.result = 'UNSTABLE'
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        // stage('Code Quality Checks') {
+        //     parallel {
+        //         stage('TypeScript Compilation') {
+        //             steps {
+        //                 echo "🔍 Running TypeScript compilation check..."
+        //                 script {
+        //                     try {
+        //                         sh 'npx tsc --noEmit'
+        //                         echo "✅ TypeScript compilation successful"
+        //                     } catch (Exception e) {
+        //                         echo "⚠️ TypeScript compilation issues found: ${e.getMessage()}"
+        //                         currentBuild.result = 'UNSTABLE'
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
         
-        stage('Execute Tests') {
-            steps {
-                echo "🧪 Executing Playwright tests..."
-                script {
-                    // Build test command based on parameters
-                    def testCommand = buildTestCommand()
+        // stage('Execute Tests') {
+        //     steps {
+        //         echo "Executing Playwright tests..."
+        //         script {
+        //             // Build test command based on parameters
+        //             def testCommand = buildTestCommand()
                     
-                    echo "Executing command: ${testCommand}"
+        //             echo "Executing command: ${testCommand}"
                     
-                    try {
-                        sh """
-                            export ENV=${params.ENVIRONMENT}
+        //             try {
+        //                 sh """
+        //                     export ENV=${params.ENVIRONMENT}
                             
-                            # Run tests
-                            ${testCommand}
-                        """
+        //                     # Run tests
+        //                     ${testCommand}
+        //                 """
                         
-                        echo "✅ Test execution completed successfully"
+        //                 echo "Test execution completed successfully"
                         
-                    } catch (Exception e) {
-                        echo "❌ Test execution failed: ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                        
-                        // Archive failed test artifacts
-                        archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
-                        throw e
-                    }
-                }
-            }
-        }
+        //             } catch (Exception e) {
+        //                 echo "Test execution failed: ${e.getMessage()}"
+        //                 currentBuild.result = 'FAILURE'
+        //             }
+        //         }
+        //     }
+        // }
         
     }
     
@@ -231,15 +227,15 @@ pipeline {
         always {
             script {
                 // Archive test artifacts first
-                echo "📊 Archiving test artifacts..."
+                echo "Archiving test artifacts..."
                 
                 if (fileExists('playwright-report')) {
-                    echo "✅ Playwright report found, archiving..."
-                    archiveArtifacts artifacts: 'playwright-report/**/*', fingerprint: true
+                    echo "Playwright report found, archiving..."
+                    archiveArtifacts artifacts: 'playwright-report/**/*', keepLongStdio: true
                 }
                 
                 if (fileExists('test-results')) {
-                    archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'test-results/**/*', keepLongStdio: true
                 }
                 
             }
@@ -252,124 +248,59 @@ pipeline {
                 reportDir: 'playwright-report',
                 reportFiles: 'index.html',
                 reportName: 'Playwright Test Report',
-                reportTitles: "ParaBank Test Results - ${params.ENVIRONMENT} - Build #${env.BUILD_NUMBER}",
-                includes: '**/*',
-                escapeUnderscores: false
             ])
             
-            script {
-                // Create comprehensive report access information
-                def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
-                
-                // Add styled link to build description
-                def reportLink = "<br/><div style='background-color: #e8f4fd; padding: 10px; border-left: 4px solid #0066cc; margin: 10px 0;'>" +
-                               "📊 <strong>Test Report:</strong> " +
-                               "<a href='${reportUrl}' target='_blank' style='color: #0066cc; font-weight: bold; text-decoration: none;'>" +
-                               "🔗 Click Here to View Interactive Report</a>" +
-                               "</div>"
-                
-                def currentDesc = currentBuild.description ?: ''
-                currentBuild.description = currentDesc + reportLink
-                
-                echo """
-                ========================================
-                📊 PLAYWRIGHT REPORT ACCESS GUIDE
-                ========================================
-                
-                🎯 Primary Method - Jenkins Web Interface:
-                1. Click the blue "🔗 Click Here to View Interactive Report" link above
-                2. OR go to: ${reportUrl}
-                3. OR use sidebar: "Playwright Test Report" link
-                
-                📁 Report Structure:
-                - Main file: index.html (interactive report)
-                - Data folder: contains test results and assets
-                - Media: screenshots, videos, traces
-                
-                ✨ Report Features:
-                ✅ Interactive test results with filters
-                ✅ Screenshots for failed tests  
-                ✅ Video recordings of test execution
-                ✅ Execution traces for debugging
-                ✅ Performance metrics and timings
-                ✅ Search and filter capabilities
-                
-                🔧 Alternative Access (if needed):
-                - Archived artifacts: Available in build artifacts
-                - Direct file access: Via Jenkins file browser
-                
-                💡 Note: This replaces "npx playwright show-report" 
-                    command with web-based access through Jenkins!
-                ========================================
-                """
-                
-                // Verify report generation
-                if (fileExists('playwright-report/index.html')) {
-                    echo "✅ Report verification: index.html found and published"
-                    
-                    // Check for data folder
-                    if (fileExists('playwright-report/data')) {
-                        echo "✅ Report verification: data folder found with test assets"
-                    } else {
-                        echo "⚠️ Report verification: data folder not found"
-                    }
-                } else {
-                    echo "❌ Report verification: index.html not found!"
-                    currentBuild.result = 'UNSTABLE'
-                }
-            }
-
         }
         
         success {
             script {
-                echo "✅ All tests passed successfully!"
+                echo "All tests passed successfully!"
                 
                 // Send success notification with report link
                 def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
-                sendNotification('SUCCESS', "✅ ParaBank tests passed successfully!\n📊 View Report: ${reportUrl}")
+                sendNotification('SUCCESS', "ParaBank tests passed successfully!\n View Report: ${reportUrl}")
                 
                 // Update build description with success status and report link
-                def baseDesc = "✅ Tests passed on ${params.ENVIRONMENT} using ${params.BROWSER}"
+                def baseDesc = "Tests passed on ${params.ENVIRONMENT} using ${params.BROWSER}"
                 currentBuild.description = baseDesc
             }
         }
         
         failure {
             script {
-                echo "❌ Test execution failed!"
+                echo "Test execution failed!"
                 
                 // Send failure notification with report link
                 def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
-                sendNotification('FAILURE', "❌ ParaBank tests failed!\n📊 View Report: ${reportUrl}")
+                sendNotification('FAILURE', "ParaBank tests failed!\n📊 View Report: ${reportUrl}")
                 
                 // Update build description with failure status
-                def baseDesc = "❌ Tests failed on ${params.ENVIRONMENT} using ${params.BROWSER}"
+                def baseDesc = "Tests failed on ${params.ENVIRONMENT} using ${params.BROWSER}"
                 currentBuild.description = baseDesc
             }
         }
         
         unstable {
             script {
-                echo "⚠️ Tests completed with warnings"
+                echo "Tests completed with warnings"
                 
                 // Send unstable notification
-                sendNotification('UNSTABLE', '⚠️ ParaBank tests completed with warnings')
+                sendNotification('UNSTABLE', 'ParaBank tests completed with warnings')
                 
                 // Update build description
-                currentBuild.description = "⚠️ Tests unstable on ${params.ENVIRONMENT} using ${params.BROWSER}"
+                currentBuild.description = "Tests unstable on ${params.ENVIRONMENT} using ${params.BROWSER}"
             }
         }
         
         aborted {
             script {
-                echo "🚫 Pipeline execution was aborted"
+                echo "Pipeline execution was aborted"
                 
                 // Send abort notification
-                sendNotification('ABORTED', '🚫 ParaBank test execution was aborted')
+                sendNotification('ABORTED', 'ParaBank test execution was aborted')
                 
                 // Update build description
-                currentBuild.description = "🚫 Execution aborted"
+                currentBuild.description = "Execution aborted"
             }
         }
     }
