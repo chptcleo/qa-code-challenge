@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - generic [ref=e2]:
     - generic [ref=e3]:
       - link:
@@ -46,7 +46,7 @@
           - generic [ref=e31]:
             - paragraph [ref=e32]:
               - generic [ref=e33]: Username
-            - textbox [ref=e35]
+            - textbox [active] [ref=e35]
             - paragraph [ref=e36]:
               - generic [ref=e37]: Password
             - textbox [ref=e39]
@@ -88,7 +88,7 @@
             - /url: services.htm
         - heading "Latest News" [level=4] [ref=e68]
         - list [ref=e69]:
-          - listitem [ref=e70]: 11/11/2025
+          - listitem [ref=e70]: 11/12/2025
           - listitem [ref=e71]:
             - link "ParaBank Is Now Re-Opened" [ref=e72] [cursor=pointer]:
               - /url: news.htm#6
