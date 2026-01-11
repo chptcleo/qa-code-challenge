@@ -2,6 +2,7 @@ import { Locator, Page } from "@playwright/test";
 import { BasePage } from "../common/base-page";
 import { Navigator } from "../common/navigator";
 import { CustomerMenu } from "../common/customer-menu";
+import { AccountsOverviewItem } from "./component/accounts-overview-item";
 
 /**
  * Accounts Overview Page
@@ -9,18 +10,14 @@ import { CustomerMenu } from "../common/customer-menu";
 export class AccountsOverviewPage extends BasePage {
   private navigator: Navigator;
   private customerMenu: CustomerMenu;
-  private balanceItemLocator: Locator;
-  private firstBalanceItemLocator: Locator;
+  private accountsOverviewItemLocator: Locator;
 
   constructor(page: Page) {
     super(page);
     this.navigator = new Navigator(page);
     this.customerMenu = new CustomerMenu(page);
-    this.balanceItemLocator = this.page.locator(
+    this.accountsOverviewItemLocator = this.page.locator(
       "#showOverview #accountTable tbody tr",
-    );
-    this.firstBalanceItemLocator = this.page.locator(
-      "#showOverview #accountTable tbody tr:first-child",
     );
   }
 
@@ -32,12 +29,10 @@ export class AccountsOverviewPage extends BasePage {
     return this.customerMenu;
   }
 
-  /**
-   * Get all balance items
-   * @returns all balance items
-   */
-  async getBalanceItems(): Promise<Locator[]> {
-    await this.waitUntilVisible(this.firstBalanceItemLocator);
-    return await this.balanceItemLocator.all();
+  async getAccountsOverviewItemByIndex(
+    index: number,
+  ): Promise<AccountsOverviewItem> {
+    const itemLocator = this.accountsOverviewItemLocator.nth(index);
+    return new AccountsOverviewItem(itemLocator);
   }
 }

@@ -94,6 +94,13 @@ export class BasePage {
   }
 
   /**
+   * Wait until the page is fully loaded
+   */
+  async waitUntilPageLoad(): Promise<void> {
+    await this.page.waitForLoadState("networkidle");
+  }
+
+  /**
    * Select an option from a dropdown
    * @param locator - The locator of the select element
    * @param optionValue - The value of the option to select

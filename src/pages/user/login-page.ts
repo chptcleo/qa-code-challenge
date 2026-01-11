@@ -24,15 +24,15 @@ export class LoginPage extends BasePage {
   /**
    * Navigate to the login page
    */
-  async gotoLoginPage(): Promise<void> {
+  async openLoginPage(): Promise<void> {
     await this.openURL(getAppConfig().baseURL);
   }
 
   /**
-   * Log in to the application
-   * @param username - The username to log in with
-   * @param password - The password to log in with
-   * @returns AccountsOverviewPage after logging in
+   * Login to the application
+   * @param username - The username to login with
+   * @param password - The password to login with
+   * @returns AccountsOverviewPage after login
    */
   async login(username: string, password: string) {
     await this.fill(this.usernameInputLocator, username);

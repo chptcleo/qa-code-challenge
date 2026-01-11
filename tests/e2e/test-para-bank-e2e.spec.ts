@@ -5,20 +5,43 @@ import { generateRandomSixDigitString } from "../../src/utils/string-util";
 import { globalVars } from "../global-vars";
 
 test.describe.serial("Test Parabank E2E", () => {
-  globalVars.username = "qa_user_" + generateRandomSixDigitString();
+  // Generate a unique username for each test run
+  const created_username = "qa_user_" + generateRandomSixDigitString();
+
+  // Store created user credentials in globalVars for interface tests
+  globalVars.username = created_username;
   globalVars.password = testData.user_info.password;
+
+  // Page Titles
+  const WELCOME_PAGE_TITLE = "ParaBank | Welcome | Online Banking";
+  const REGISTER_PAGE_TITLE =
+    "ParaBank | Register for Free Online Account Access";
+  const CUSTOMER_CREATED_PAGE_TITLE = "ParaBank | Customer Created";
+  const ACCOUNTS_OVERVIEW_PAGE_TITLE = "ParaBank | Accounts Overview";
+  const ABOUT_US_PAGE_TITLE = "ParaBank | About Us";
+  const SERVICES_PAGE_TITLE = "ParaBank | Services";
+  const PRODUCTS_PAGE_TITLE =
+    "Automated Software Testing Tools - Ensure Quality - Parasoft";
+  const LOCATIONS_PAGE_TITLE =
+    "Automated Software Testing Solutions For Every Testing Need";
+  const ADMIN_PAGE_TITLE = "ParaBank | Administration";
+  const OPEN_ACCOUNT_PAGE_TITLE = "ParaBank | Open Account";
+  const TRANSFER_FUNDS_PAGE_TITLE = "ParaBank | Transfer Funds";
+  const BILL_PAY_PAGE_TITLE = "ParaBank | Bill Pay";
+
+  // Page Objects
   let loginPage: LoginPage;
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    await loginPage.gotoLoginPage();
-    await expect(page).toHaveTitle(/Welcome/);
+    await loginPage.openLoginPage();
+    await expect(page).toHaveTitle(WELCOME_PAGE_TITLE);
   });
 
   test("Test registration @smoke @regression", async ({ page }) => {
     // Navigate to Register page
     let registerPage = await loginPage.gotoRegisterPage();
-    await expect(page).toHaveTitle(/Register/);
+    await expect(page).toHaveTitle(REGISTER_PAGE_TITLE);
 
     // Fill in registration form and submit
     await registerPage.register(
@@ -30,12 +53,12 @@ test.describe.serial("Test Parabank E2E", () => {
       testData.user_info.zip_code,
       testData.user_info.phone,
       testData.user_info.ssn,
-      globalVars.username,
+      created_username,
       testData.user_info.password,
     );
-    await expect(page).toHaveTitle(/Customer Created/);
+    await expect(page).toHaveTitle(CUSTOMER_CREATED_PAGE_TITLE);
     expect(await registerPage.getWelcomeMessage()).toBe(
-      `Welcome ${globalVars.username}`,
+      `Welcome ${created_username}`,
     );
     expect(await registerPage.getPromptMessage()).toBe(
       "Your account was created successfully. You are now logged in.",
@@ -43,57 +66,54 @@ test.describe.serial("Test Parabank E2E", () => {
 
     // Logout
     loginPage = await registerPage.getCustomerMenu().logout();
-    await expect(page).toHaveTitle(/Welcome/);
+    await expect(page).toHaveTitle(WELCOME_PAGE_TITLE);
   });
 
   test("Test global navigation menu @smoke @regression", async ({ page }) => {
     // Login first
     let accountsOverviewPage = await loginPage.login(
-      globalVars.username,
+      created_username,
       testData.user_info.password,
     );
-    await expect(page).toHaveTitle(/Accounts Overview/);
+    await expect(page).toHaveTitle(ACCOUNTS_OVERVIEW_PAGE_TITLE);
 
-    // Skip as there is no link for Solutions menu item
-    // await accountsOverviewPage.getNavigator().navigateToSolutions();
-    // await expect(page).toHaveTitle(/Solutions/);
-    // await page.goBack();
+    // Skip Solutions menu as there is no link with it
 
     // Navigate through other menu items
     await accountsOverviewPage.getNavigator().navigateToAboutUs();
-    await expect(page).toHaveTitle(/About Us/);
+    await expect(page).toHaveTitle(ABOUT_US_PAGE_TITLE);
     await page.goBack();
 
     await accountsOverviewPage.getNavigator().navigateToServices();
-    await expect(page).toHaveTitle(/Services/);
+    await expect(page).toHaveTitle(SERVICES_PAGE_TITLE);
     await page.goBack();
 
     await accountsOverviewPage.getNavigator().navigateToProducts();
-    await expect(page).toHaveTitle(/Ensure Quality/);
+    await expect(page).toHaveTitle(PRODUCTS_PAGE_TITLE);
     await page.goBack();
 
     await accountsOverviewPage.getNavigator().navigateToLocations();
-    await expect(page).toHaveTitle(/Solutions For Every Testing Need/);
+    await expect(page).toHaveTitle(LOCATIONS_PAGE_TITLE);
     await page.goBack();
 
     await accountsOverviewPage.getNavigator().navigateToAdminPage();
-    await expect(page).toHaveTitle(/Administration/);
+    await expect(page).toHaveTitle(ADMIN_PAGE_TITLE);
     await page.goBack();
   });
 
   test("Test transfer funds and pay bill @regression", async ({ page }) => {
     // Login first
     let accountsOverviewPage = await loginPage.login(
-      globalVars.username,
+      created_username,
       testData.user_info.password,
     );
-    await expect(page).toHaveTitle(/Accounts Overview/);
+    await expect(page).toHaveTitle(ACCOUNTS_OVERVIEW_PAGE_TITLE);
 
     // Open a new account
     let openNewAccountPage = await accountsOverviewPage
       .getCustomerMenu()
       .gotoOpenNewAccount();
-    expect(page).toHaveTitle(/Open Account/);
+    expect(page).toHaveTitle(OPEN_ACCOUNT_PAGE_TITLE);
 
     await openNewAccountPage.openNewAccount("SAVINGS");
     const newAccountNumber = await openNewAccountPage.getNewAccountNumber();
@@ -104,17 +124,22 @@ test.describe.serial("Test Parabank E2E", () => {
     accountsOverviewPage = await openNewAccountPage
       .getCustomerMenu()
       .gotoAccountsOverview();
-    expect(page).toHaveTitle(/Accounts Overview/);
+    expect(page).toHaveTitle(ACCOUNTS_OVERVIEW_PAGE_TITLE);
 
-    // Verify there are balance items
-    const balanceItems = await accountsOverviewPage.getBalanceItems();
-    expect(balanceItems.length).toBeGreaterThan(0);
+    // Verify the balance details
+    const newAccountOverviewItem =
+      await accountsOverviewPage.getAccountsOverviewItemByIndex(1);
+    expect(await newAccountOverviewItem.getAccountNumber()).toBe(
+      newAccountNumber,
+    );
+    expect(await newAccountOverviewItem.getAccountBalance()).toBe("$100.00");
+    expect(await newAccountOverviewItem.getAvailableAmount()).toBe("$100.00");
 
     // Transfer funds
     let transferFundsPage = await accountsOverviewPage
       .getCustomerMenu()
       .gotoTransferFunds();
-    expect(page).toHaveTitle(/Transfer Funds/);
+    expect(page).toHaveTitle(TRANSFER_FUNDS_PAGE_TITLE);
 
     await transferFundsPage.transferFunds("1", newAccountNumber);
     expect(await transferFundsPage.getTransferCompleteMessage()).toBe(
@@ -127,7 +152,7 @@ test.describe.serial("Test Parabank E2E", () => {
 
     // Pay Bill
     let billPayPage = await transferFundsPage.getCustomerMenu().gotoBillPay();
-    expect(page).toHaveTitle(/Bill Pay/);
+    expect(page).toHaveTitle(BILL_PAY_PAGE_TITLE);
 
     await billPayPage.sendPayment(
       testData.payee_info.payee_name,
