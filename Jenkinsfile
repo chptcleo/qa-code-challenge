@@ -241,7 +241,7 @@ pipeline {
             // }
 
             archiveArtifacts(
-                artifacts: 'playwright-report/**/*',  // 归档整个报告目录
+                artifacts: 'playwright-report/**/*',
                 fingerprint: false,
                 onlyIfSuccessful: false,
                 allowEmptyArchive: false
@@ -255,7 +255,7 @@ pipeline {
                     keepAll: true,  
                     reportDir: 'playwright-report',  
                     reportFiles: 'index.html',  
-                    reportName: 'Playwright Report',  
+                    reportName: 'Playwright Test Report',  
                     reportTitles: 'Playwright Test Report',
                     resolveRelativePaths: true,  
                     escapeUnderscores: false,   
