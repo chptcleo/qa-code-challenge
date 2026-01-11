@@ -253,6 +253,11 @@ pipeline {
                     escapeUnderscores: false,
                     resolveRelativePaths: true
                 ])
+            archiveArtifacts(
+                artifacts: 'playwright-report/**/*',
+                fingerprint: false,
+                onlyIfSuccessful: false
+            )
             
         }
         
