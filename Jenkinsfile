@@ -243,7 +243,7 @@ pipeline {
             archiveArtifacts(
                 artifacts: 'playwright-report/**/*',  // 归档整个报告目录
                 fingerprint: false,
-                onlyIfSuccessful: false，
+                onlyIfSuccessful: false,
                 allowEmptyArchive: false
             )
 
