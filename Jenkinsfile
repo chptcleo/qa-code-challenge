@@ -247,8 +247,7 @@ pipeline {
                 keepAll: true,
                 reportDir: 'playwright-report',
                 reportFiles: 'index.html',
-                reportName: 'PlaywrightTestReport',
-                includeResources: true
+                reportName: 'PlaywrightTestReport'
             ])
             
         }
