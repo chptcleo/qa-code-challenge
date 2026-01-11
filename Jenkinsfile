@@ -240,24 +240,29 @@ pipeline {
                 
             // }
 
+            archiveArtifacts(
+                artifacts: 'playwright-report/**/*',  // 归档整个报告目录
+                fingerprint: false,
+                onlyIfSuccessful: false，
+                allowEmptyArchive: false
+            )
+
             // Publish HTML Report with enhanced configuration for Playwright
             publishHTML(
                 target: [
                     allowMissing: false,  
-                    alwaysLinkToLastBuild: false,  
+                    alwaysLinkToLastBuild: true,  
                     keepAll: true,  
                     reportDir: 'playwright-report',  
                     reportFiles: 'index.html',  
                     reportName: 'Playwright Report',  
                     reportTitles: 'Playwright Test Report',
-                    escapeUnderscores: false,
-                    resolveRelativePaths: true
+                    resolveRelativePaths: true,  
+                    escapeUnderscores: false,   
+                    includeFiles: '**/*',       
+                    keepRelativePath: true 
                 ])
-            archiveArtifacts(
-                artifacts: 'playwright-report/**/*',
-                fingerprint: false,
-                onlyIfSuccessful: false
-            )
+           
             
         }
         
