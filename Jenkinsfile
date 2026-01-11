@@ -241,15 +241,16 @@ pipeline {
             // }
 
             // Publish HTML Report with enhanced configuration for Playwright
-            publishHTML([
-                allowMissing: false,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'playwright-report',
-                reportFiles: 'index.html',
-                reportName: 'PlaywrightTestReport',
-                includes: true
-            ])
+            publishHTML(
+                target: [
+                    allowMissing: false,  
+                    alwaysLinkToLastBuild: false,  
+                    keepAll: true,  
+                    reportDir: 'playwright-report',  
+                    reportFiles: 'index.html',  
+                    reportName: 'Playwright Report',  
+                    reportTitles: 'Playwright Test Report'
+                ])
             
         }
         
