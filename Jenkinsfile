@@ -249,7 +249,9 @@ pipeline {
                     reportDir: 'playwright-report',  
                     reportFiles: 'index.html',  
                     reportName: 'Playwright Report',  
-                    reportTitles: 'Playwright Test Report'
+                    reportTitles: 'Playwright Test Report',
+                    escapeUnderscores: false,
+                    resolveRelativePaths: true
                 ])
             
         }
