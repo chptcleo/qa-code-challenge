@@ -271,7 +271,7 @@ pipeline {
                 echo "All tests passed successfully!"
                 
                 // Send success notification with report link
-                def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
+                def reportUrl = "${env.BUILD_URL}Playwright_20Test_20Report/"
                 sendNotification('SUCCESS', "ParaBank tests passed successfully!\n View Report: ${reportUrl}")
                 
                 // Update build description with success status and report link
