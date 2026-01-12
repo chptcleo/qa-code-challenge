@@ -53,8 +53,6 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         timeout(time: 30, unit: 'MINUTES')
         timestamps()
-        // Retry failed builds
-        retry(1)
     }
     
     stages {
