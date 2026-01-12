@@ -271,7 +271,7 @@ pipeline {
                 echo "Test execution failed!"
                 
                 // Send failure notification with report link
-                def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
+                def reportUrl = "${env.BUILD_URL}Playwright_20Test_20Report/"
                 sendNotification('FAILURE', "ParaBank tests failed!\n View Report: ${reportUrl}")
                 
                 // Update build description with failure status
@@ -284,6 +284,7 @@ pipeline {
                 echo "Tests completed with warnings"
                 
                 // Send unstable notification
+                def reportUrl = "${env.BUILD_URL}Playwright_20Test_20Report/"
                 sendNotification('UNSTABLE', "ParaBank tests completed with warnings!\n View Report: ${reportUrl}")
                 
                 // Update build description
