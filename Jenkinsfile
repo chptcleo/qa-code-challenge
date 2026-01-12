@@ -33,12 +33,12 @@ pipeline {
         )
         choice(
             name: 'BROWSER',
-            choices: ['chromium', 'firefox', 'webkit', 'all'],
+            choices: ['chromium', 'firefox', 'webkit'],
             description: 'Browser for test execution'
         )
         choice(
             name: 'WORKERS',
-            choices: ['1', '2', '4', 'auto'],
+            choices: ['1', '2', '4'],
             description: 'Number of parallel workers'
         )
         booleanParam(
@@ -54,7 +54,7 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
         timestamps()
         // Retry failed builds
-        // retry(1)
+        retry(1)
     }
     
     stages {
@@ -69,16 +69,6 @@ pipeline {
                     echo "Workers: ${params.WORKERS}"
                     echo "Generate Trace: ${params.GENERATE_TRACE}"
                     echo "======================================"
-                    
-                    // Display system info
-                    sh '''
-                        echo "System Information:"
-                        uname -a
-                        echo "Available disk space:"
-                        df -h
-                        echo "Memory usage:"
-                        free -h || echo "Memory info not available"
-                    '''
                 }
             }
         }
@@ -114,10 +104,6 @@ pipeline {
                             # Check if Node.js is available
                             node --version
                             npm --version
-                            
-                            # Verify Node.js version
-                            NODE_CURRENT=$(node --version | sed 's/v//')
-                            echo "Current Node.js version: $NODE_CURRENT"
                         '''
                     } catch (Exception e) {
                         error "Node.js not found. Please install Node.js version ${NODE_VERSION} or higher."
@@ -126,126 +112,127 @@ pipeline {
             }
         }
         
-        // stage('Install Dependencies') {
-        //     steps {
-        //         echo "Installing npm dependencies..."
-        //         script {
-        //             try {
-        //                 sh '''
-        //                     # Clean npm cache if needed
-        //                     npm cache clean --force || true
+        stage('Install Dependencies') {
+            steps {
+                echo "Installing npm dependencies..."
+                script {
+                    try {
+                        sh '''
+                            # Clean npm cache if needed
+                            npm cache clean --force || true
                             
-        //                     # Install dependencies
-        //                     npm ci
+                            # Install dependencies
+                            npm ci
                             
-        //                     # Verify Playwright installation
-        //                     npx playwright --version
+                            # Verify Playwright installation
+                            npx playwright --version
                             
-        //                     # List installed packages
-        //                     npm list --depth=0
-        //                 '''
-        //             } catch (Exception e) {
-        //                 error "Failed to install dependencies: ${e.getMessage()}"
-        //             }
-        //         }
-        //     }
-        // }
+                            # List installed packages
+                            npm list --depth=0
+                        '''
+                    } catch (Exception e) {
+                        error "Failed to install dependencies: ${e.getMessage()}"
+                    }
+                }
+            }
+        }
         
-        // stage('Install Playwright Browsers') {
-        //     steps {
-        //         echo "Installing Playwright browsers..."
-        //         script {
-        //             def browsersToInstall = params.BROWSER == 'all' ? 'chromium firefox webkit' : params.BROWSER
-                    
-        //             try {
-        //                 sh """
-        //                     # Install specific browsers based on selection
-        //                     npx playwright install ${browsersToInstall}
+        stage('Install Playwright Browser') {
+            steps {
+                echo "Installing Playwright browser..."
+                script {
+                    try {
+                        sh """
+                            # Install specific browser based on selection
+                            npx playwright install ${params.BROWSER}
                             
-        //                     # Install system dependencies (Linux)
-        //                     npx playwright install-deps ${browsersToInstall}
+                            # Install system dependencies (Linux)
+                            npx playwright install-deps ${params.BROWSER}
                             
-        //                     # Verify browser installation
-        //                     npx playwright install --dry-run
-        //                 """
-        //             } catch (Exception e) {
-        //                 echo "Browser installation warning: ${e.getMessage()}"
-        //             }
-        //         }
-        //     }
-        // }
+                            # Verify browser installation
+                            npx playwright install --dry-run
+                        """
+                    } catch (Exception e) {
+                        echo "Browser installation warning: ${e.getMessage()}"
+                    }
+                }
+            }
+        }
         
-        // stage('Code Quality Checks') {
-        //     parallel {
-        //         stage('TypeScript Compilation') {
-        //             steps {
-        //                 echo "Running TypeScript compilation check..."
-        //                 script {
-        //                     try {
-        //                         sh 'npx tsc --noEmit'
-        //                         echo "TypeScript compilation successful"
-        //                     } catch (Exception e) {
-        //                         echo "TypeScript compilation issues found: ${e.getMessage()}"
-        //                         currentBuild.result = 'UNSTABLE'
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Code Quality Checks') {
+            parallel {
+                stage('TypeScript Compilation') {
+                    steps {
+                        echo "Running TypeScript compilation check..."
+                        script {
+                            try {
+                                sh 'npx tsc --noEmit'
+                                echo "TypeScript compilation successful"
+                            } catch (Exception e) {
+                                echo "TypeScript compilation issues found: ${e.getMessage()}"
+                                currentBuild.result = 'UNSTABLE'
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
-        // stage('Execute Tests') {
-        //     steps {
-        //         echo "Executing Playwright tests..."
-        //         script {
-        //             // Build test command based on parameters
-        //             def testCommand = buildTestCommand()
+        stage('Execute Tests') {
+            steps {
+                echo "Executing Playwright tests..."
+                script {
+                    // Build test command based on parameters
+                    def testCommand = buildTestCommand()
                     
-        //             echo "Executing command: ${testCommand}"
+                    echo "Executing command: ${testCommand}"
                     
-        //             try {
-        //                 sh """
-        //                     export ENV=${params.ENVIRONMENT}
+                    try {
+                        sh """
+                            export ENV=${params.ENVIRONMENT}
                             
-        //                     # Run tests
-        //                     ${testCommand}
-        //                 """
+                            # Run tests
+                            ${testCommand}
+                        """
                         
-        //                 echo "Test execution completed successfully"
+                        echo "Test execution completed successfully"
                         
-        //             } catch (Exception e) {
-        //                 echo "Test execution failed: ${e.getMessage()}"
-        //                 currentBuild.result = 'FAILURE'
-        //             }
-        //         }
-        //     }
-        // }
+                    } catch (Exception e) {
+                        echo "Test execution failed: ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
         
     }
     
     post {
         always {
-            // script {
-            //     // Archive test artifacts first
-            //     echo "Archiving test artifacts..."
+            script {
+                // Archive test artifacts first
+                echo "Archiving test artifacts..."
                 
-            //     if (fileExists('playwright-report')) {
-            //         echo "Playwright report found, archiving..."
-            //         archiveArtifacts artifacts: 'playwright-report/**/*', keepLongStdio: true
-            //     }
+                if (fileExists('playwright-report')) {
+                    echo "Playwright report found, archiving..."
+                    archiveArtifacts(
+                        artifacts: 'playwright-report/**/*',
+                        fingerprint: false,
+                        onlyIfSuccessful: false,
+                        allowEmptyArchive: false
+                    )
+                }
                 
-            //     if (fileExists('test-results')) {
-            //         archiveArtifacts artifacts: 'test-results/**/*', keepLongStdio: true
-            //     }
+                if (fileExists('test-results')) {
+                    archiveArtifacts(
+                        artifacts: 'test-results/**/*',
+                        fingerprint: false,
+                        onlyIfSuccessful: false,
+                        allowEmptyArchive: false
+                    )
+                }
                 
-            // }
-
-            archiveArtifacts(
-                artifacts: 'playwright-report/**/*',
-                fingerprint: false,
-                onlyIfSuccessful: false,
-                allowEmptyArchive: false
-            )
+            }
 
             // Publish HTML Report with enhanced configuration for Playwright
             publishHTML(
@@ -275,48 +262,46 @@ pipeline {
                 sendNotification('SUCCESS', "ParaBank tests passed successfully!\n View Report: ${reportUrl}")
                 
                 // Update build description with success status and report link
-                def baseDesc = "Tests passed on ${params.ENVIRONMENT} using ${params.BROWSER}"
-                currentBuild.description = baseDesc
+                currentBuild.description = "Tests passed on ${params.ENVIRONMENT} using ${params.BROWSER}"
             }
         }
         
-        // failure {
-        //     script {
-        //         echo "Test execution failed!"
+        failure {
+            script {
+                echo "Test execution failed!"
                 
-        //         // Send failure notification with report link
-        //         def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
-        //         sendNotification('FAILURE', "ParaBank tests failed!\n📊 View Report: ${reportUrl}")
+                // Send failure notification with report link
+                def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
+                sendNotification('FAILURE', "ParaBank tests failed!\n View Report: ${reportUrl}")
                 
-        //         // Update build description with failure status
-        //         def baseDesc = "Tests failed on ${params.ENVIRONMENT} using ${params.BROWSER}"
-        //         currentBuild.description = baseDesc
-        //     }
-        // }
+                // Update build description with failure status
+                currentBuild.description = "Tests failed on ${params.ENVIRONMENT} using ${params.BROWSER}"
+            }
+        }
         
-        // unstable {
-        //     script {
-        //         echo "Tests completed with warnings"
+        unstable {
+            script {
+                echo "Tests completed with warnings"
                 
-        //         // Send unstable notification
-        //         sendNotification('UNSTABLE', 'ParaBank tests completed with warnings')
+                // Send unstable notification
+                sendNotification('UNSTABLE', "ParaBank tests completed with warnings!\n View Report: ${reportUrl}")
                 
-        //         // Update build description
-        //         currentBuild.description = "Tests unstable on ${params.ENVIRONMENT} using ${params.BROWSER}"
-        //     }
-        // }
+                // Update build description
+                currentBuild.description = "Tests unstable on ${params.ENVIRONMENT} using ${params.BROWSER}"
+            }
+        }
         
-        // aborted {
-        //     script {
-        //         echo "Pipeline execution was aborted"
+        aborted {
+            script {
+                echo "Pipeline execution was aborted"
                 
-        //         // Send abort notification
-        //         sendNotification('ABORTED', 'ParaBank test execution was aborted')
+                // Send abort notification
+                sendNotification('ABORTED', 'ParaBank test execution was aborted')
                 
-        //         // Update build description
-        //         currentBuild.description = "Execution aborted"
-        //     }
-        // }
+                // Update build description
+                currentBuild.description = "Execution aborted"
+            }
+        }
     }
 }
 
@@ -345,12 +330,12 @@ def buildTestCommand() {
     }
     
     // Add browser filter
-    if (params.BROWSER && params.BROWSER != 'all') {
+    if (params.BROWSER) {
         command += " --project=${params.BROWSER}"
     }
     
     // Add workers
-    if (params.WORKERS && params.WORKERS != 'auto') {
+    if (params.WORKERS) {
         command += " --workers=${params.WORKERS}"
     }
     
