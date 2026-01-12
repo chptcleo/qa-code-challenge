@@ -266,19 +266,19 @@ pipeline {
             
         }
         
-        // success {
-        //     script {
-        //         echo "All tests passed successfully!"
+        success {
+            script {
+                echo "All tests passed successfully!"
                 
-        //         // Send success notification with report link
-        //         def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
-        //         sendNotification('SUCCESS', "ParaBank tests passed successfully!\n View Report: ${reportUrl}")
+                // Send success notification with report link
+                def reportUrl = "${env.BUILD_URL}Playwright_Test_Report/"
+                sendNotification('SUCCESS', "ParaBank tests passed successfully!\n View Report: ${reportUrl}")
                 
-        //         // Update build description with success status and report link
-        //         def baseDesc = "Tests passed on ${params.ENVIRONMENT} using ${params.BROWSER}"
-        //         currentBuild.description = baseDesc
-        //     }
-        // }
+                // Update build description with success status and report link
+                def baseDesc = "Tests passed on ${params.ENVIRONMENT} using ${params.BROWSER}"
+                currentBuild.description = baseDesc
+            }
+        }
         
         // failure {
         //     script {
