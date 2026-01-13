@@ -19,7 +19,7 @@ export default defineConfig({
     actionTimeout: 0,
     trace: "on-first-retry",
     baseURL: getAppConfig().baseURL,
-    headless: false,
+    headless: true,
     screenshot: "only-on-failure",
     video: "retain-on-failure",
   },
