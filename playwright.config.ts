@@ -19,7 +19,7 @@ export default defineConfig({
     actionTimeout: 0,
     trace: "on-first-retry",
     baseURL: getAppConfig().baseURL,
-    headless: true,
+    headless: false,
     screenshot: "only-on-failure",
     video: "retain-on-failure",
   },
@@ -28,6 +28,14 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
+    },
+    {
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
     },
   ],
 });

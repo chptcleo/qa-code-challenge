@@ -33,12 +33,12 @@ pipeline {
         )
         choice(
             name: 'BROWSER',
-            choices: ['chromium', 'firefox', 'webkit'],
+            choices: ['chromium', 'firefox', 'webkit', 'all'],
             description: 'Browser for test execution'
         )
         choice(
             name: 'WORKERS',
-            choices: ['1', '2', '4'],
+            choices: ['1', '2', '4', 'auto'],
             description: 'Number of parallel workers'
         )
         booleanParam(
@@ -329,12 +329,12 @@ def buildTestCommand() {
     }
     
     // Add browser filter
-    if (params.BROWSER) {
+    if (params.BROWSER && params.BROWSER != 'all') {
         command += " --project=${params.BROWSER}"
     }
     
     // Add workers
-    if (params.WORKERS) {
+    if (params.WORKERS && params.WORKERS != 'auto') {
         command += " --workers=${params.WORKERS}"
     }
     
