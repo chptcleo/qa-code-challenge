@@ -144,7 +144,7 @@ pipeline {
                     try {
                         sh """
                             # Update package lists
-                            sudo apt-get update
+                            apt-get update
                             npm config ls -l
 
                             # Install specific browser based on selection
