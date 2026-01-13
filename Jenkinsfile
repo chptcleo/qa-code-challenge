@@ -139,15 +139,19 @@ pipeline {
             steps {
                 echo "Installing Playwright browser..."
                 script {
+                    def browsersToInstall = params.BROWSER == 'all' ? 'chromium firefox webkit' : params.BROWSER
+
                     try {
                         sh """
-                            apt-get update
-                            
+                            # Update package lists
+                            sudo apt-get update
+                            npm config ls -l
+
                             # Install specific browser based on selection
-                            npx playwright install ${params.BROWSER}
+                            npx playwright install ${browsersToInstall}
                             
                             # Install system dependencies (Linux)
-                            npx playwright install-deps ${params.BROWSER}
+                            npx playwright install-deps ${browsersToInstall}
                             
                             # Verify browser installation
                             npx playwright install --dry-run
