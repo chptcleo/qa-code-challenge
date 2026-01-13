@@ -7,6 +7,7 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "test:smoke": "npx playwright test --grep @smoke",
+    "test:smoke:chromium": "npx playwright test --grep @smoke --project=chromium",
     "test:regression": "npx playwright test --grep @regression",
     "test:e2e": "npx playwright test tests/e2e",
     "test:interface": "npx playwright test tests/interface",

@@ -74,7 +74,7 @@ npx playwright --version
 npx tsc --noEmit
 
 # Run a quick test to verify setup
-npm run test:smoke
+npm run test:smoke:chromium
 ```
 
 ### 4. Environment Configuration
