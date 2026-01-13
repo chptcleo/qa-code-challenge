@@ -141,6 +141,8 @@ pipeline {
                 script {
                     try {
                         sh """
+                            apt-get update
+                            
                             # Install specific browser based on selection
                             npx playwright install ${params.BROWSER}
                             
