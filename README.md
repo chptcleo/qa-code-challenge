@@ -2,15 +2,18 @@
 
 A comprehensive end-to-end test automation framework built with Playwright and TypeScript for testing the ParaBank web application.
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [Core Features](#-core-features)
-- [Prerequisites](#-prerequisites)
-- [Setup Instructions](#️-setup-instructions)
-- [Running Tests](#-running-tests)
-- [Reporting](#-reporting)
+- [Project Overview](#project-overview)
+- [Core Features](#core-features)
+- [Prerequisites](#prerequisites)
+- [Setup Instructions](#setup-instructions)
+- [Running Tests](#running-tests)
+- [Reporting](#reporting)
+- [Configuration](#configuration)
+- [Jenkins Pipeline](#jenkins-pipeline)
 
-## 🚀 Project Overview
+## Project Overview
 
 This test automation framework is designed to provide comprehensive testing coverage for the ParaBank banking application. It follows the Page Object Model (POM) design pattern and includes support for multiple test environments, browsers, and test execution modes.
 
@@ -20,7 +23,7 @@ This test automation framework is designed to provide comprehensive testing cove
 - **URL**: https://parabank.parasoft.com
 - **Purpose**: Banking application testing and demonstration
 
-## ✨ Core Features
+## Core Features
 
 - **TypeScript & Page Object Model** - Type-safe, maintainable test architecture
 - **Multi-Environment Support** - Test across dev, qa, uat, and prod environments
@@ -31,7 +34,7 @@ This test automation framework is designed to provide comprehensive testing cove
 - **CI/CD Ready** - Jenkins integration with automated pipelines
 - **Code Quality** - ESLint and Prettier for consistent code standards
 
-## 📋 Prerequisites
+## Prerequisites
 
 Before setting up the project, ensure you have the following installed:
 
@@ -39,7 +42,7 @@ Before setting up the project, ensure you have the following installed:
 - **npm** (comes with Node.js)
 - **Git** (for version control)
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 ### 1. Clone the Repository
 
@@ -52,13 +55,13 @@ cd qa-code-challenge
 
 ```bash
 # Install npm dependencies
-npm install
+npm ci
 
 # Install Playwright browsers
-npx playwright install chromium
+npx playwright install
 
 # Install system dependencies (Linux only)
-npx playwright install-deps chromium
+npx playwright install-deps
 ```
 
 ### 3. Verify Installation
@@ -83,7 +86,7 @@ The framework supports multiple environments. Set your target environment:
 export ENV=qa  # or dev, uat, prod
 ```
 
-## 🏃 Running Tests
+## Running Tests
 
 ### Test Execution
 
@@ -100,22 +103,10 @@ npm run test:interface  # Interface tests
 
 # Run tests by tags
 npm run test:smoke      # Smoke tests only
-npm run test:regression # Regression tests only
+npm run test:regression # Regression tests only    
 ```
 
-## ⚙️ Configuration
-
-### Environment Configuration
-
-Environment-specific settings are stored in `src/config/`:
-
-```json
-{
-  "baseURL": "https://parabank.parasoft.com"
-}
-```
-
-## 📊 Reporting
+## Reporting
 
 ### HTML Reports
 
@@ -141,4 +132,41 @@ npm run test:report
 - **Videos**: `test-results/`
 - **Traces**: `test-results/`
 
-**Happy Testing! 🎯**
+## Configuration
+
+### Environment Configuration
+
+Environment-specific settings are stored in `src/config/`:
+
+```json
+{
+  "baseURL": "https://parabank.parasoft.com"
+}
+```
+
+## Jenkins Pipeline
+
+The project includes a Jenkins pipeline (`Jenkinsfile`) for automated test execution with configurable parameters.
+
+### Execution Methods
+
+1. Navigate to your Jenkins job
+2. Click **"Build with Parameters"**
+3. Configure parameters and click **"Build"**
+
+### Pipeline Parameters
+
+| Parameter | Options | Description |
+|-----------|---------|-------------|
+| **ENVIRONMENT** | `qa`, `dev`, `uat`, `prod` | Target test environment |
+| **TEST_SUITE** | `e2e`, `interface`, `smoke`, `regression`, `all` | Which tests to run |
+| **BROWSER** | `chromium`, `firefox`, `webkit`, `all` | Browser selection |
+| **WORKERS** | `1`, `2`, `4`, `auto` | Parallel execution workers |
+| **GENERATE_TRACE** | `true`, `false` | Enable debugging traces |
+
+### Results & Reports
+
+- **HTML Report**: Published as "Playwright Test Report"
+- **Artifacts**: Screenshots, videos, and traces archived
+- **Email Notifications**: Sent for all build outcomes
+- **Build Status**: Displays environment and browser used
