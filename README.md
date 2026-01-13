@@ -100,7 +100,7 @@ npm run test:interface  # Interface tests
 
 # Run tests by tags
 npm run test:smoke      # Smoke tests only
-npm run test:regression # Regression tests only    
+npm run test:regression # Regression tests only
 ```
 
 ## ⚙️ Configuration
