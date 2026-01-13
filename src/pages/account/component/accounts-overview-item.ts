@@ -3,7 +3,6 @@ import { Locator } from "@playwright/test";
 /**
  * Account Overview Item Component
  */
-
 export class AccountsOverviewItem {
   // Locators for the account overview item
   private itemLocator: Locator;

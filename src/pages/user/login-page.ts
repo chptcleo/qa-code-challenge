@@ -8,6 +8,7 @@ import { AccountsOverviewPage } from "../account/accounts-overview-page";
  * Login Page
  */
 export class LoginPage extends BasePage {
+  // Page Locators
   private usernameInputLocator: Locator;
   private passwordInputLocator: Locator;
   private submitButtonLocator: Locator;
@@ -30,8 +31,8 @@ export class LoginPage extends BasePage {
 
   /**
    * Login to the application
-   * @param username - The username to login with
-   * @param password - The password to login with
+   * @param username The username to login with
+   * @param password The password to login with
    * @returns AccountsOverviewPage after login
    */
   async login(username: string, password: string) {

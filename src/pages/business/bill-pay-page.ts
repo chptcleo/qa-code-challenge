@@ -5,6 +5,7 @@ import { BasePage } from "../common/base-page";
  * Bill Pay Page
  */
 export class BillPayPage extends BasePage {
+  // Page Components
   private payeeNameInputLocator: Locator;
   private addressInputLocator: Locator;
   private cityInputLocator: Locator;

@@ -10,6 +10,7 @@ import { BillPayPage } from "../business/bill-pay-page";
  * Customer Menu component
  */
 export class CustomerMenu extends BasePage {
+  // Menu Links
   private logoutLinkLocator: Locator;
   private openNewAccountLinkLocator: Locator;
   private accountsOverviewLinkLocator: Locator;

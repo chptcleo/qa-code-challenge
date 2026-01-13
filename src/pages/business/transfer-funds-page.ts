@@ -6,8 +6,8 @@ import { CustomerMenu } from "../common/customer-menu";
  * Transfer Funds Page
  */
 export class TransferFundsPage extends BasePage {
+  // Page Components
   private customerMenu: CustomerMenu;
-
   private amountInputLocator: Locator;
   private fromAccountIdSelectLocator: Locator;
   private toAccountIdSelectLocator: Locator;
@@ -79,6 +79,10 @@ export class TransferFundsPage extends BasePage {
     return this.getText(this.fromAccountIdResultSpanLocator);
   }
 
+  /**
+   * Get the Customer Menu
+   * @returns CustomerMenu instance
+   */
   getCustomerMenu(): CustomerMenu {
     return this.customerMenu;
   }

@@ -6,6 +6,7 @@ import { CustomerMenu } from "../common/customer-menu";
  * Register Page
  */
 export class RegisterPage extends BasePage {
+  // Page Locators
   private firstNameInputLocator: Locator;
   private lastNameInputLocator: Locator;
   private addressInputLocator: Locator;
@@ -18,10 +19,8 @@ export class RegisterPage extends BasePage {
   private passwordInputLocator: Locator;
   private repeatPasswordInputLocator: Locator;
   private registerButtonLocator: Locator;
-
   private welcomeMsgLocator: Locator;
   private promptMsgLocator: Locator;
-
   private customerMenu: CustomerMenu;
 
   constructor(page: Page) {
@@ -53,16 +52,16 @@ export class RegisterPage extends BasePage {
 
   /**
    * Fill in the registration form
-   * @param firstName - The first name of the customer
-   * @param lastName - The last name of the customer
-   * @param address - The address of the customer
-   * @param city - The city of the customer
-   * @param state - The state of the customer
-   * @param zipCode - The zip code of the customer
-   * @param phone - The phone number of the customer
-   * @param ssn - The social security number of the customer
-   * @param username - The username for the customer account
-   * @param password - The password for the customer account
+   * @param firstName The first name of the customer
+   * @param lastName The last name of the customer
+   * @param address The address of the customer
+   * @param city The city of the customer
+   * @param state The state of the customer
+   * @param zipCode The zip code of the customer
+   * @param phone The phone number of the customer
+   * @param ssn The social security number of the customer
+   * @param username The username for the customer account
+   * @param password The password for the customer account
    */
   async register(
     firstName: string,
@@ -106,6 +105,10 @@ export class RegisterPage extends BasePage {
     return this.getText(this.promptMsgLocator);
   }
 
+  /**
+   * Get the customer menu
+   * @returns The customer menu instance
+   */
   getCustomerMenu(): CustomerMenu {
     return this.customerMenu;
   }

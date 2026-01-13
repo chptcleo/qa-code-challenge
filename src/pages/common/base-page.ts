@@ -12,7 +12,7 @@ export class BasePage {
 
   /**
    * Open a specific url
-   * @param url - The url to open
+   * @param url The url to open
    */
   async openURL(url: string = ""): Promise<void> {
     await this.page.goto(url);
@@ -20,7 +20,7 @@ export class BasePage {
 
   /**
    * Wait for a locator to be visible and click it
-   * @param locator - The locator to click
+   * @param locator The locator to click
    */
   async click(locator: Locator): Promise<void> {
     await locator.waitFor({ state: "visible" });
@@ -29,8 +29,8 @@ export class BasePage {
 
   /**
    * Wait for a locator to be visible and fill it with text
-   * @param locator - The locator to fill
-   * @param text - The text to fill
+   * @param locator The locator to fill
+   * @param text The text to fill
    */
   async fill(locator: Locator, text: string): Promise<void> {
     await locator.waitFor({ state: "visible" });
@@ -39,7 +39,7 @@ export class BasePage {
 
   /**
    * Get text content from a locator
-   * @param locator - The locator to get text from
+   * @param locator The locator to get text from
    * @returns The text content
    */
   async getText(locator: Locator): Promise<string> {
@@ -49,7 +49,7 @@ export class BasePage {
 
   /**
    * Wait for a certain amount of time
-   * @param ms - Time in milliseconds
+   * @param ms Time in milliseconds
    */
   async waitForTimeout(ms: number): Promise<void> {
     await this.page.waitForTimeout(ms);
@@ -57,7 +57,7 @@ export class BasePage {
 
   /**
    * Check if a locator is visible
-   * @param locator - The locator to check
+   * @param locator The locator to check
    * @returns True if visible, false otherwise
    */
   async isVisible(locator: Locator): Promise<boolean> {
@@ -71,8 +71,8 @@ export class BasePage {
 
   /**
    * Wait until a locator is visible
-   * @param locator - The locator to wait for
-   * @param timeout - Maximum time to wait in milliseconds (default: 10000)
+   * @param locator The locator to wait for
+   * @param timeout Maximum time to wait in milliseconds (default: 10000)
    */
   async waitUntilVisible(
     locator: Locator,
@@ -83,8 +83,8 @@ export class BasePage {
 
   /**
    * Wait until a locator is attached to the DOM
-   * @param locator - The locator to wait for
-   * @param timeout - Maximum time to wait in milliseconds (default: 10000)
+   * @param locator The locator to wait for
+   * @param timeout Maximum time to wait in milliseconds (default: 10000)
    */
   async waitUntilAttached(
     locator: Locator,
@@ -102,8 +102,8 @@ export class BasePage {
 
   /**
    * Select an option from a dropdown
-   * @param locator - The locator of the select element
-   * @param optionValue - The value of the option to select
+   * @param locator The locator of the select element
+   * @param optionValue The value of the option to select
    */
   async selectOption(locator: Locator, optionValue: string): Promise<void> {
     await locator.waitFor({ state: "visible" });

@@ -6,6 +6,7 @@ import { CustomerMenu } from "../common/customer-menu";
  * Open New Account Page
  */
 export class OpenNewAccountPage extends BasePage {
+  // Page Components
   private accountTypeSelectLocator: Locator;
   private fromAccountIdSelectLocator: Locator;
   private firstFromAccountIdSelectOptionLocator: Locator;
@@ -56,6 +57,10 @@ export class OpenNewAccountPage extends BasePage {
     return this.getText(this.newAccountNumberLocator);
   }
 
+  /**
+   * Get the Customer Menu
+   * @returns CustomerMenu instance
+   */
   getCustomerMenu(): CustomerMenu {
     return this.customerMenu;
   }

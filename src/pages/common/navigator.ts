@@ -38,30 +38,51 @@ export class Navigator extends BasePage {
     );
   }
 
+  /**
+   * Navigate to Solutions page
+   */
   async navigateToSolutions(): Promise<void> {
     await this.click(this.solutionsLinkLocator);
   }
 
+  /**
+   * Navigate to About Us page
+   */
   async navigateToAboutUs(): Promise<void> {
     await this.click(this.aboutUsLinkLocator);
   }
 
+  /**
+   * Navigate to Services page
+   */
   async navigateToServices(): Promise<void> {
     await this.click(this.servicesLinkLocator);
   }
 
+  /**
+   * Navigate to Products page
+   */
   async navigateToProducts(): Promise<void> {
     await this.click(this.productsLinkLocator);
   }
 
+  /**
+   * Navigate to Locations page
+   */
   async navigateToLocations(): Promise<void> {
     await this.click(this.locationsLinkLocator);
   }
 
+  /**
+   * Navigate to Admin Page
+   */
   async navigateToAdminPage(): Promise<void> {
     await this.click(this.adminPageLinkLocator);
   }
 
+  /**
+   * Navigate to Bill Pay page
+   */
   async navigateToBillPay(): Promise<void> {
     await this.click(this.billPayLinkLocator);
   }
