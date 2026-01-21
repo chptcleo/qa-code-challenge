@@ -103,7 +103,7 @@ npm run test:interface  # Interface tests
 
 # Run tests by tags
 npm run test:smoke      # Smoke tests only
-npm run test:regression # Regression tests only    
+npm run test:regression # Regression tests only
 ```
 
 ## Reporting
@@ -156,13 +156,13 @@ The project includes a Jenkins pipeline (`Jenkinsfile`) for automated test execu
 
 ### Pipeline Parameters
 
-| Parameter | Options | Description |
-|-----------|---------|-------------|
-| **ENVIRONMENT** | `qa`, `dev`, `uat`, `prod` | Target test environment |
-| **TEST_SUITE** | `e2e`, `interface`, `smoke`, `regression`, `all` | Which tests to run |
-| **BROWSER** | `chromium`, `firefox`, `webkit`, `all` | Browser selection |
-| **WORKERS** | `1`, `2`, `4`, `auto` | Parallel execution workers |
-| **GENERATE_TRACE** | `true`, `false` | Enable debugging traces |
+| Parameter          | Options                                          | Description                |
+| ------------------ | ------------------------------------------------ | -------------------------- |
+| **ENVIRONMENT**    | `qa`, `dev`, `uat`, `prod`                       | Target test environment    |
+| **TEST_SUITE**     | `e2e`, `interface`, `smoke`, `regression`, `all` | Which tests to run         |
+| **BROWSER**        | `chromium`, `firefox`, `webkit`, `all`           | Browser selection          |
+| **WORKERS**        | `1`, `2`, `4`, `auto`                            | Parallel execution workers |
+| **GENERATE_TRACE** | `true`, `false`                                  | Enable debugging traces    |
 
 ### Results & Reports
 
