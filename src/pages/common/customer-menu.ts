@@ -5,6 +5,7 @@ import { OpenNewAccountPage } from "../account/open-new-account-page";
 import { AccountsOverviewPage } from "../account/accounts-overview-page";
 import { TransferFundsPage } from "../business/transfer-funds-page";
 import { BillPayPage } from "../business/bill-pay-page";
+import { RequestLoanPage } from "../business/request-loan-page";
 
 /**
  * Customer Menu component
@@ -16,6 +17,7 @@ export class CustomerMenu extends BasePage {
   private accountsOverviewLinkLocator: Locator;
   private transferFundsLinkLocator: Locator;
   private billPayLinkLocator: Locator;
+  private requestLoanLinkLocator: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -30,6 +32,9 @@ export class CustomerMenu extends BasePage {
       "//a[text()='Transfer Funds']",
     );
     this.billPayLinkLocator = this.page.locator("//a[text()='Bill Pay']");
+    this.requestLoanLinkLocator = this.page.locator(
+      "//a[text()='Request Loan']",
+    );
   }
 
   /**
@@ -75,5 +80,14 @@ export class CustomerMenu extends BasePage {
   async gotoBillPay(): Promise<BillPayPage> {
     await this.click(this.billPayLinkLocator);
     return new BillPayPage(this.page);
+  }
+
+  /**
+   * Navigate to the Request Loan page
+   * @returns RequestLoanPage after navigating to Request Loan page
+   */
+  async gotoRequestLoan(): Promise<RequestLoanPage> {
+    await this.click(this.requestLoanLinkLocator);
+    return new RequestLoanPage(this.page);
   }
 }

@@ -1,0 +1,12 @@
+{
+  "payee_info": {
+    "payee_name": "qa_payee_name",
+    "address": "qa_payee_address",
+    "city": "qa_payee_city",
+    "state": "qa_payee_state",
+    "zip_code": "qa_payee_zip_code",
+    "phone": "qa_payee_phone",
+    "account": "10000",
+    "amount": "8"
+  }
+}

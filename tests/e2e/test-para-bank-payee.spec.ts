@@ -1,16 +1,16 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "../../src/pages/user/login-page";
-import testData from "./test-para-bank-e2e.json";
-import { generateRandomSixDigitString } from "../../src/utils/string-util";
+import payeeTestData from "./test-para-bank-payee.json";
+import userTestData from "./test-para-bank-user.json";
+import { generateTimestampString } from "../../src/utils/string-util";
 import { globalVars } from "../global-vars";
 
 test.describe.serial("Test Parabank E2E", () => {
   // Generate a unique username for each test run
-  const created_username = "qa_user_" + generateRandomSixDigitString();
-
+  const created_username = "qa_u_" + generateTimestampString();
   // Store created user credentials in globalVars for interface tests
   globalVars.username = created_username;
-  globalVars.password = testData.user_info.password;
+  globalVars.password = userTestData.user_info.password;
 
   // Page Titles
   const WELCOME_PAGE_TITLE = "ParaBank | Welcome | Online Banking";
@@ -38,23 +38,23 @@ test.describe.serial("Test Parabank E2E", () => {
     await expect(page).toHaveTitle(WELCOME_PAGE_TITLE);
   });
 
-  test("Test registration @smoke @regression", async ({ page }) => {
+  test("Test registration @smoke @regression @payee", async ({ page }) => {
     // Navigate to Register page
     let registerPage = await loginPage.gotoRegisterPage();
     await expect(page).toHaveTitle(REGISTER_PAGE_TITLE);
 
     // Fill in registration form and submit
     await registerPage.register(
-      testData.user_info.first_name,
-      testData.user_info.last_name,
-      testData.user_info.address,
-      testData.user_info.city,
-      testData.user_info.state,
-      testData.user_info.zip_code,
-      testData.user_info.phone,
-      testData.user_info.ssn,
+      userTestData.user_info.first_name,
+      userTestData.user_info.last_name,
+      userTestData.user_info.address,
+      userTestData.user_info.city,
+      userTestData.user_info.state,
+      userTestData.user_info.zip_code,
+      userTestData.user_info.phone,
+      userTestData.user_info.ssn,
       created_username,
-      testData.user_info.password,
+      userTestData.user_info.password,
     );
     await expect(page).toHaveTitle(CUSTOMER_CREATED_PAGE_TITLE);
     expect(await registerPage.getWelcomeMessage()).toBe(
@@ -69,11 +69,13 @@ test.describe.serial("Test Parabank E2E", () => {
     await expect(page).toHaveTitle(WELCOME_PAGE_TITLE);
   });
 
-  test("Test global navigation menu @smoke @regression", async ({ page }) => {
+  test("Test global navigation menu @smoke @regression @payee", async ({
+    page,
+  }) => {
     // Login first
     let accountsOverviewPage = await loginPage.login(
       created_username,
-      testData.user_info.password,
+      userTestData.user_info.password,
     );
     await expect(page).toHaveTitle(ACCOUNTS_OVERVIEW_PAGE_TITLE);
 
@@ -101,11 +103,13 @@ test.describe.serial("Test Parabank E2E", () => {
     await page.goBack();
   });
 
-  test("Test transfer funds and pay bill @regression", async ({ page }) => {
+  test("Test transfer funds and pay bill @regression @payee", async ({
+    page,
+  }) => {
     // Login first
     let accountsOverviewPage = await loginPage.login(
       created_username,
-      testData.user_info.password,
+      userTestData.user_info.password,
     );
     await expect(page).toHaveTitle(ACCOUNTS_OVERVIEW_PAGE_TITLE);
 
@@ -132,8 +136,8 @@ test.describe.serial("Test Parabank E2E", () => {
     expect(await newAccountOverviewItem.getAccountNumber()).toBe(
       newAccountNumber,
     );
-    expect(await newAccountOverviewItem.getAccountBalance()).toBe("$100.00");
-    expect(await newAccountOverviewItem.getAvailableAmount()).toBe("$100.00");
+    expect(await newAccountOverviewItem.getAccountBalance()).toBe("$10.00");
+    expect(await newAccountOverviewItem.getAvailableAmount()).toBe("$10.00");
 
     // Transfer funds
     let transferFundsPage = await accountsOverviewPage
@@ -155,14 +159,14 @@ test.describe.serial("Test Parabank E2E", () => {
     expect(page).toHaveTitle(BILL_PAY_PAGE_TITLE);
 
     await billPayPage.sendPayment(
-      testData.payee_info.payee_name,
-      testData.payee_info.address,
-      testData.payee_info.city,
-      testData.payee_info.state,
-      testData.payee_info.zip_code,
-      testData.payee_info.phone,
-      testData.payee_info.account,
-      testData.payee_info.amount,
+      payeeTestData.payee_info.payee_name,
+      payeeTestData.payee_info.address,
+      payeeTestData.payee_info.city,
+      payeeTestData.payee_info.state,
+      payeeTestData.payee_info.zip_code,
+      payeeTestData.payee_info.phone,
+      payeeTestData.payee_info.account,
+      payeeTestData.payee_info.amount,
       newAccountNumber,
     );
     expect(await billPayPage.getBillPayCompleteMessage()).toBe(
@@ -170,12 +174,12 @@ test.describe.serial("Test Parabank E2E", () => {
     );
 
     expect(await billPayPage.getPayeeNameResult()).toBe(
-      testData.payee_info.payee_name,
+      payeeTestData.payee_info.payee_name,
     );
     expect(await billPayPage.getAmountResult()).toBe(
-      `$${testData.payee_info.amount}.00`,
+      `$${payeeTestData.payee_info.amount}.00`,
     );
     expect(await billPayPage.getFromAccountIdResult()).toBe(newAccountNumber);
-    globalVars.billAmount = testData.payee_info.amount;
+    globalVars.billAmount = payeeTestData.payee_info.amount;
   });
 });
